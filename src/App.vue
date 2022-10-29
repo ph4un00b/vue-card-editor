@@ -2,14 +2,14 @@
 import { defineComponent } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 import Test from './components/Test.vue'
-import Noise from './components/Noise.vue'
+import Layer from './components/Layer.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
     Test,
     HelloWorld,
-    Noise,
+    Layer,
   },
 })
 </script>
@@ -19,7 +19,7 @@ export default defineComponent({
     <img width="30%" src="@/assets/logo.svg" alt="Vite logo" />
     <HelloWorld msg="Vue 2 + Vite" />
     <Test />
-    <Noise />
+    <Layer />
   </div>
 </template>
 

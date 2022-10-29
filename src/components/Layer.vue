@@ -22,13 +22,14 @@ export default {
 
 <style scoped>
 .layer {
+  background-image: url(src/assets/noise-layer.webp);
   margin: auto;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
-  transform: translateY(-10%);
-  /* transform: translateX(50%); */
-  width: 80vw;
-  height: 80vw;
+  transform: translateY(-25%);
+  width: 40vw;
+  /* height: 80vw; */
+  aspect-ratio: 9/16;
   border: 0.1rem solid;
   border-color: red;
   color: #42b983;
