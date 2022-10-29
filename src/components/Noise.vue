@@ -22,7 +22,15 @@ export default {
 
 <style scoped>
 .layer {
-  border: 0.5rem;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  transform: translateY(-10%);
+  /* transform: translateX(50%); */
+  width: 80vw;
+  height: 80vw;
+  border: 0.1rem solid;
+  border-color: red;
   color: #42b983;
 }
 /* 
