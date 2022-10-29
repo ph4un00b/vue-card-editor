@@ -20,7 +20,7 @@ export default defineComponent({
     <HelloWorld msg="Vue 2 + Vite" />
     <Test />
     <Layer Yaxis='-25%' />
-    <!-- <Layer /> -->
+    <Layer />
   </div>
 </template>
 

@@ -10,6 +10,7 @@ export default {
     Yaxis: {
       type: String,
       required: !true,
+      default: '0%'
     },
   },
   data() {
