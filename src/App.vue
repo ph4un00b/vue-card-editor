@@ -19,7 +19,8 @@ export default defineComponent({
     <img width="30%" src="@/assets/logo.svg" alt="Vite logo" />
     <HelloWorld msg="Vue 2 + Vite" />
     <Test />
-    <Layer />
+    <Layer Yaxis='-25%' />
+    <!-- <Layer /> -->
   </div>
 </template>
 

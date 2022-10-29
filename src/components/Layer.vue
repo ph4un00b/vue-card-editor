@@ -1,12 +1,14 @@
 <template>
-  <div class="layer">noise</div>
+  <div :style="defineCSSvars" class="layer">
+    noise + {{Yaxis}}
+  </div>
 </template>
 
 <script>
 export default {
   props: {
-    ninjas: {
-      type: Array,
+    Yaxis: {
+      type: String,
       required: !true,
     },
   },
@@ -16,7 +18,13 @@ export default {
     }
   },
   methods: {},
-  computed: {},
+  computed: {
+    defineCSSvars() {
+      return {
+        '--Yaxis': this.Yaxis,
+      }
+    }
+  },
 }
 </script>
 
@@ -26,13 +34,12 @@ export default {
   margin: auto;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
-  transform: translateY(-25%);
+  transform: translateY(var(--Yaxis));
   width: 40vw;
-  /* height: 80vw; */
   aspect-ratio: 9/16;
   border: 0.1rem solid;
   border-color: red;
-  color: #42b983;
+  color: royalblue;
 }
 /* 
 label {
