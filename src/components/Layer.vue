@@ -1,9 +1,11 @@
 <template>
   <div :style="defineCSSvars" class="layer">
-    + {{blend}} 
-    + {{Yaxis}} 
-    <!-- + {{bg}} -->
+    <div style="position: absolute; color: white; top: 0;">
+      + {{blend}} + {{Yaxis}} 
+    </div>
+
   </div>
+
 </template>
 
 <script>
@@ -80,10 +82,10 @@ export default {
   top: 0; left: 0; bottom: 0; right: 0;
   transform: translateY(var(--Yaxis));
   width: 60vw;
-  aspect-ratio: 3/4;
+  max-width: 300px;
+  aspect-ratio: 5/6;
   border: 0.1rem solid;
   border-color: red;
-  color: rgb(255, 255, 255, 1);
   filter: var(--filter);
 }
 </style>
