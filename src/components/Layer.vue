@@ -3,7 +3,6 @@
     + {{blend}} 
     + {{Yaxis}} 
     <!-- + {{bg}} -->
-    + {{angle}}
   </div>
 </template>
 
@@ -84,19 +83,7 @@ export default {
   aspect-ratio: 3/4;
   border: 0.1rem solid;
   border-color: red;
-  color: royalblue;
+  color: rgb(255, 255, 255, 1);
   filter: var(--filter);
 }
-/* 
-label {
-  margin: 0 0.5em;
-  font-weight: bold;
-}
-
-p {
-  background-color: #eee;
-  padding: 2px 4px;
-  border-radius: 4px;
-  color: #304455;
-} */
 </style>
