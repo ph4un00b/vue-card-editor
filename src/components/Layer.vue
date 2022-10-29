@@ -18,12 +18,32 @@ export default {
     bg: {
       type: String,
       required: !true,
-      default: 'url(src/assets/noise-layer.webp)'
+      default: ''
     },
     blend: {
       type: String,
       required: !true,
       default:'none'
+    },
+    zoom: {
+      type: String,
+      required: !true,
+      default:'auto'
+    },
+    posY: {
+      type: String,
+      required: !true,
+      default:'0%'
+    },
+    posX: {
+      type: String,
+      required: !true,
+      default:'0%'
+    },
+    filter: {
+      type: String,
+      required: !true,
+      default:''
     },
   },
   data() {
@@ -38,6 +58,10 @@ export default {
         '--Yaxis': this.Yaxis,
         '--bg': this.bg,
         '--blend': this.blend,
+        '--size': this.zoom,
+        '--posX': this.posX,
+        '--posY': this.posY,
+        '--filter': this.filter,
       }
     }
   },
@@ -47,6 +71,9 @@ export default {
 <style scoped>
 .layer {
   background-image: var(--bg);
+  background-size: var(--size);
+  background-position-x: var(--posX);
+  background-position-y: var(--posY);
   /* background-image: ; */
   mix-blend-mode: var(--blend);
   margin: auto;
@@ -58,6 +85,7 @@ export default {
   border: 0.1rem solid;
   border-color: red;
   color: royalblue;
+  filter: var(--filter);
 }
 /* 
 label {
