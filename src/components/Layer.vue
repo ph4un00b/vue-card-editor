@@ -1,6 +1,9 @@
 <template>
   <div :style="defineCSSvars" class="layer">
-    noise + {{Yaxis}}
+    + {{blend}} 
+    + {{Yaxis}} 
+    <!-- + {{bg}} -->
+    + {{angle}}
   </div>
 </template>
 
@@ -11,6 +14,16 @@ export default {
       type: String,
       required: !true,
       default: '0%'
+    },
+    bg: {
+      type: String,
+      required: !true,
+      default: 'url(src/assets/noise-layer.webp)'
+    },
+    blend: {
+      type: String,
+      required: !true,
+      default:'none'
     },
   },
   data() {
@@ -23,6 +36,8 @@ export default {
     defineCSSvars() {
       return {
         '--Yaxis': this.Yaxis,
+        '--bg': this.bg,
+        '--blend': this.blend,
       }
     }
   },
@@ -31,13 +46,15 @@ export default {
 
 <style scoped>
 .layer {
-  background-image: url(src/assets/noise-layer.webp);
+  background-image: var(--bg);
+  /* background-image: ; */
+  mix-blend-mode: var(--blend);
   margin: auto;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
   transform: translateY(var(--Yaxis));
-  width: 40vw;
-  aspect-ratio: 9/16;
+  width: 60vw;
+  aspect-ratio: 3/4;
   border: 0.1rem solid;
   border-color: red;
   color: royalblue;
