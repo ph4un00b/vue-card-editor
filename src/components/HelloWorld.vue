@@ -23,28 +23,36 @@ export default defineComponent({
     let blends = ''
     let bgImage = ''
     let zooms = ''
+    let positions = ''
     console.log(slots.default ? slots.default() : [])
     slots.default().forEach(item => {
       /**
        * {
        *   "Yaxis": "-20%",
        *   "bg": "repeating-linear-gradient(...)",
+       *   "pos"
        *   "blend": "hard-light",
        *   "zoom": "200%"
        * }
        */
+      // console.log(item.data)
+      /** XXXX: still dont know if this is the best API to fecth props data */
       //  console.log(item.componentOptions.propsData)
        blends += item.componentOptions.propsData.blend + ", "
       //  console.log(item.componentOptions.propsData.bg)
        bgImage += item.componentOptions.propsData.bg + ","
        zooms += item.componentOptions.propsData.zoom + ","
+       positions += item.componentOptions.propsData.pos 
+        ? item.componentOptions.propsData.pos + "," 
+        : '0% 50%,'
       })
 
   const removeLastComma = (x) => x.substring(0, x.lastIndexOf(","))
   bgImage = removeLastComma(bgImage)
   blends = removeLastComma(blends)
   zooms = removeLastComma(zooms)
-  console.log(zooms)
+  positions = removeLastComma(positions)
+  console.log(positions)
   const l1 = "repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))"
   const l2 = "repeating-linear-gradient(/* lever -> */ 135deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)"
   const lradial ="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)"
@@ -59,6 +67,7 @@ export default defineComponent({
       background-size: ${zooms};
       background-blend-mode: ${blends};
       background-position: 0% 50%, 50% 50%, 50% 50%;
+      background-position: ${positions};
       filter: ${filter};
       aspect-ratio: 5/6;
       margin: auto;

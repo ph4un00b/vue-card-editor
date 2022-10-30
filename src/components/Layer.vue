@@ -31,15 +31,10 @@ export default {
       required: !true,
       default:'auto'
     },
-    posY: {
+    pos: {
       type: String,
       required: !true,
-      default:'0%'
-    },
-    posX: {
-      type: String,
-      required: !true,
-      default:'0%'
+      default: '0% 0%'
     },
     filter: {
       type: String,
@@ -55,13 +50,15 @@ export default {
   methods: {},
   computed: {
     defineCSSvars() {
+      console.log(this.pos)
       return {
         '--Yaxis': this.Yaxis,
         '--bg': this.bg,
         '--blend': this.blend,
         '--size': this.zoom,
-        '--posX': this.posX,
-        '--posY': this.posY,
+        '--pos': this.pos,
+        // '--posX': this.posX,
+        // '--posY': this.posY,
         '--filter': this.filter,
       }
     }
@@ -73,10 +70,11 @@ export default {
 .layer {
   background-image: var(--bg);
   background-size: var(--size);
-  background-position-x: var(--posX);
-  background-position-y: var(--posY);
+  background-position: var(--pos);
+  /* background-position-x: var(--posX); */
+  /* background-position-y: var(--posY); */
   mix-blend-mode: var(--blend);
-    /* mix-blend-mode: color-dodge; */
+  /* mix-blend-mode: color-dodge; */
   /* background-image: ; */
   margin: auto;
   position: absolute;
