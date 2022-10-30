@@ -1,5 +1,5 @@
 <script>
-import { ref, defineComponent } from 'vue'
+import { ref, defineComponent, h } from 'vue'
 
 export default defineComponent({
   name: 'HelloWorld',
@@ -10,8 +10,7 @@ export default defineComponent({
     },
   },
   setup() {
-    const count = ref(0)
-    return { count }
+    return () => h("div", "hola!")
   },
 })
 </script>
