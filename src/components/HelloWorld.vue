@@ -54,12 +54,12 @@ export default defineComponent({
       background-position: 0% 50%, 50% 50%, 50% 50%;
       filter: ${filter};
       aspect-ratio: 5/6;
-      // border: 0.1rem solid;
-      // border-color: red;
+      border: 0.1rem solid;
+      border-color: red;
       margin: auto;
       position: absolute;
       transform: translateX(${posX});
-      top: 0; left: -0%; bottom: 0; right: 0;
+      top: 0; left: 0%; bottom: 0; right: 0;
       `
       })
   },
