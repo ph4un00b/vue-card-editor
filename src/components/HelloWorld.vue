@@ -15,7 +15,9 @@ export default defineComponent({
 })
 </script>
 
+
 <template>
+<!-- this is avoided since we return from setup() -->
   <div>
     <h1>{{ msg }}</h1>
     <p>
