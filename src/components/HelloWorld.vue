@@ -24,6 +24,7 @@ export default defineComponent({
     let bgImage = ''
     let zooms = ''
     let positions = ''
+    console.log(slots)
     console.log(slots.default ? slots.default() : [])
     slots.default().forEach(item => {
       /**
