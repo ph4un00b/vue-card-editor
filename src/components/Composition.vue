@@ -59,8 +59,8 @@ export default {
   // console.log(props)
     const html = h("div", {
       style: `
-      width: 60vw;
-      max-width: 300px;
+      width: 80vw;
+      max-width: 764px;
       mix-blend-mode: ${props.blend};
       background-image: ${bgImage.trim()};
       background-size: ${zooms};
