@@ -1,11 +1,29 @@
 <template>
-  <section>
-   <slot>composition</slot>
-  </section>
+    <section>
+        <slot>template</slot>
+    </section>
 </template>
 
 <script>
 export default {
+    render(createElement) {
+      console.log('rendering', this)
+    //       this.$slots.default?.forEach(item => {
+    //   /**
+    //    * {
+    //    *   "Yaxis": "-20%",
+    //    *   "bg": "repeating-linear-gradient(...)",
+    //    *   "blend": "hard-light",
+    //    *   "zoom": "200%"
+    //    * }
+    //    */
+    //    console.log(item.componentOptions.propsData)
+    //   })
+      return createElement(
+        'h1', 
+        'jamon'
+      )
+    },
   props: {
     ninjas: {
       type: Array,
@@ -13,10 +31,18 @@ export default {
     },
   },
   beforeMount() {
-    // console.log(this.$slots.default[0])
-    this.$slots.default.forEach(item => {
-     console.log(item.componentOptions.propsData)
-    })
+    // // console.log(this.$slots.default[0])
+    // this.$slots.default?.forEach(item => {
+    // /**
+    //  * {
+    //  *   "Yaxis": "-20%",
+    //  *   "bg": "repeating-linear-gradient(...)",
+    //  *   "blend": "hard-light",
+    //  *   "zoom": "200%"
+    //  * }
+    //  */
+    //  console.log(item.componentOptions.propsData)
+    // })
   },
   data() {
     return {}

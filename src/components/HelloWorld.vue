@@ -6,11 +6,51 @@ export default defineComponent({
   props: {
     msg: {
       type: String,
-      required: true,
+      required: !true,
     },
   },
-  setup() {
-    return () => h("div", "hola!")
+  setup(_, {slots}) {
+    let string = ''
+    let bgImage = ''
+    console.log(slots.default ? slots.default() : [])
+    slots.default().forEach(item => {
+      /**
+       * {
+       *   "Yaxis": "-20%",
+       *   "bg": "repeating-linear-gradient(...)",
+       *   "blend": "hard-light",
+       *   "zoom": "200%"
+       * }
+       */
+      //  console.log(item.componentOptions.propsData)
+       string += item.componentOptions.propsData.blend + ", "
+       bgImage += item.componentOptions.propsData.bg + ", "
+      })
+
+  console.log({bgImage})
+  const l1 = "repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))"
+  const l2 = "repeating-linear-gradient(/* lever -> */ 135deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)"
+  const lradial ="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)"
+  const lurl ="url(src/assets/noise-layer.webp)"
+  const test = `${lurl},${l1},${l2},${lradial}`.trim()
+    return () => h("div", {
+      style: `
+      // mix-blend-mode: color-burn;
+      width: 60vw;
+      max-width: 300px;
+      background-image: ${test};
+      background-size: 50%, 200% 700%, 300%, 200%;
+      background-blend-mode: exclusion, hue, hard-light, exclusion;
+      background-position: 0% 50%, 50% 50%, 50% 50%;
+      filter: brightness(calc((0.0*0.3) + 0.5)) contrast(2) saturate(1.5);
+      aspect-ratio: 5/6;
+      // border: 0.1rem solid;
+      // border-color: red;
+      margin: auto;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      `
+      })
   },
 })
 </script>
