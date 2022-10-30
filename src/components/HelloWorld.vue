@@ -35,14 +35,14 @@ export default defineComponent({
   const test = `${lurl},${l1},${l2},${lradial}`.trim()
     return () => h("div", {
       style: `
-      // mix-blend-mode: color-burn;
       width: 60vw;
       max-width: 300px;
+      mix-blend-mode: color-dodge;
       background-image: ${test};
       background-size: 50%, 200% 700%, 300%, 200%;
       background-blend-mode: exclusion, hue, hard-light, exclusion;
       background-position: 0% 50%, 50% 50%, 50% 50%;
-      filter: brightness(calc((0.0*0.3) + 0.5)) contrast(2) saturate(1.5);
+      filter: brightness(calc((0*0.3) + 0.5)) contrast(2) saturate(1.5);
       aspect-ratio: 5/6;
       // border: 0.1rem solid;
       // border-color: red;
