@@ -12,6 +12,12 @@ export default {
       required: !true,
     },
   },
+  beforeMount() {
+    // console.log(this.$slots.default[0])
+    this.$slots.default.forEach(item => {
+     console.log(item.componentOptions.propsData)
+    })
+  },
   data() {
     return {}
   },
