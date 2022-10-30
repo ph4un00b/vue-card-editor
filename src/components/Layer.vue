@@ -1,8 +1,8 @@
 <template>
   <div :style="defineCSSvars" class="layer">
-    <div style="position: absolute; color: white; top: 0;">
+    <!-- <div style="position: absolute; color: white; top: 0;">
       + {{blend}} + {{Yaxis}} 
-    </div>
+    </div> -->
 
   </div>
 
@@ -75,8 +75,9 @@ export default {
   background-size: var(--size);
   background-position-x: var(--posX);
   background-position-y: var(--posY);
-  /* background-image: ; */
   mix-blend-mode: var(--blend);
+    /* mix-blend-mode: color-dodge; */
+  /* background-image: ; */
   margin: auto;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
