@@ -83,8 +83,8 @@ export default {
   width: 60vw;
   max-width: 300px;
   aspect-ratio: 5/6;
-  border: 0.1rem solid;
-  border-color: red;
+  /* border: 0.1rem solid; */
+  /* border-color: red; */
   filter: var(--filter);
 }
 </style>
