@@ -38,6 +38,7 @@ export default {
     // },
   },
   render(h, context) {
+
     const slots = context.slots()
     let blendModes = ''
     let buffers = ''
@@ -68,12 +69,81 @@ export default {
     const props = context.props
     const lastLayer = slots?.last
     const children = lastLayer ? [lastLayer] : []
-    const html = h(
-      'div',
-      {
-        style: `
+
+    const mainBuffers = () => !lastLayer ? [] : [
+      h(
+        'section',
+        {
+          style: `
+      width: 20vh;
+      height: 20vh;
+      max-width: calc(768px / 4);
+      // margin: auto;
+      position: absolute;
+      top: 0; left: 0;
+       border: /** debug */ 0.1rem solid;
+      border-color: /** debug */ red;
+      `,
+        },
+        'buffer0'
+      ),
+      h(
+        'section',
+        {
+          style: `
+      width: 20vh;
+      height: 20vh;
+      max-width: calc(768px / 4);
+      // margin: auto;
+      position: absolute;
+      top: 20vh; left: 0;
+       border: /** debug */ 0.1rem solid;
+      border-color: /** debug */ red;
+      `,
+        },
+        'buffer1'
+      ),
+      h(
+        'section',
+        {
+          style: `
+      width: 20vh;
+      height: 20vh;
+      max-width: calc(768px / 4);
+      // margin: auto;
+      position: absolute;
+      top: 40vh; left: 0;
+       border: /** debug */ 0.1rem solid;
+      border-color: /** debug */ red;
+      `,
+        },
+        'buffer2'
+      ),
+      h(
+        'section',
+        {
+          style: `
+      width: 20vh;
+      height: 20vh;
+      max-width: calc(768px / 4);
+      // margin: auto;
+      position: absolute;
+      top: 60vh; left: 0;
+       border: /** debug */ 0.1rem solid;
+      border-color: /** debug */ red;
+      `,
+        },
+        'buffer3'
+      ),
+    ]
+
+    const html = [
+      h(
+        'div',
+        {
+          style: `
       width: 80vw;
-      max-width: 764px;
+      max-width: 768px;
       mix-blend-mode: ${props.blend};
       background-image: ${buffers.trim()};
       background-size: ${bgSizes};
@@ -85,13 +155,17 @@ export default {
       position: absolute;
       top: 0; left: 0%; bottom: 0; right: 0;
       `,
-      },
-      children
-    )
+        },
+        children
+      ),
+      ...mainBuffers(),
+    ]
     // border: /** debug */ 0.1rem solid;
     // border-color: /** debug */ red;
     //transform: /** debug */ translateX(${props.posX});
     return html
+
+
   },
   data() {
     return {}
