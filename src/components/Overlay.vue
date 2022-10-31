@@ -56,13 +56,15 @@ export default {
                  * fecth props data */
                 blendModes += blend + ', '
                 buffers.push(bg ? bg : 'none')
-                bgSizes.push(zoom ? zoom : 'none')
-                bgPositions.push(pos ? pos : 'none')
+                bgSizes.push(zoom ? zoom : 'auto auto')
+                bgPositions.push(pos ? pos : '0% 0%')
             }
         )
 
+        console.log(bgSizes)
+        console.log(bgPositions)
         // console.log(lastLayer?.map(v => console.log(v.render())))
-        const attatchOverleyBuffers = () => {
+        const attatchOverlayBuffers = () => {
             const staticStyles = `
                 width: 20vh;
                 height: 20vh;
@@ -101,8 +103,6 @@ export default {
         // bgSizes = rmLastComma(bgSizes)
         // bgPositions = rmLastComma(bgPositions)
         const props = context.props
-        const isLastLayer = slots?.last
-        const children = isLastLayer ? [slots?.last] : []
 
         const html = [
             h(
@@ -115,7 +115,8 @@ export default {
                         background-image: ${buffers.join(',')};
                         background-size: ${bgSizes.join(",")};
                         background-blend-mode: ${blendModes};
-                        background-position: ${bgPositions.join(",")};
+                        // background-position: ${bgPositions.join(",")};
+                        background-position: none, 50% 0%;
                         filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
                         aspect-ratio: ${props.aspect};
                         margin: auto;
@@ -124,9 +125,9 @@ export default {
                         `,
                 },
             ),
-            ...attatchOverleyBuffers()
+            ...attatchOverlayBuffers()
         ]
-        //transform: /** debug */ translateX(${props.posX});
+
         return html
     },
     data() {

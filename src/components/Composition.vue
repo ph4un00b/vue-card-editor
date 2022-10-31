@@ -58,8 +58,8 @@ export default {
            * fecth props data */
           blendModes += blend + ', '
           buffers.push(bg ? bg : 'none')
-          bgSizes.push(zoom ? zoom : 'none')
-          bgPositions.push(pos ? pos : 'none')
+          bgSizes.push(zoom ? zoom : 'auto auto')
+          bgPositions.push(pos ? pos : '0% 0%')
         }
       )
 
