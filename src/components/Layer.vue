@@ -28,7 +28,7 @@ export default {
     zoom: {
       type: String,
       required: !true,
-      default: 'auto',
+      default: 'auto auto',
     },
     pos: {
       type: String,
