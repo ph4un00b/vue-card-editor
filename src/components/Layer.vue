@@ -1,11 +1,9 @@
 <template>
   <div :style="defineCSSvars" class="layer">
     <!-- <div style="position: absolute; color: white; top: 0;">
-      + {{blend}} + {{Yaxis}} 
+      + {{blend}} + {{Yaxis}}
     </div> -->
-
   </div>
-
 </template>
 
 <script>
@@ -14,32 +12,32 @@ export default {
     Yaxis: {
       type: String,
       required: !true,
-      default: '0%'
+      default: '0%',
     },
     bg: {
       type: String,
       required: !true,
-      default: ''
+      default: '',
     },
     blend: {
       type: String,
       required: !true,
-      default:'none'
+      default: 'none',
     },
     zoom: {
       type: String,
       required: !true,
-      default:'auto'
+      default: 'auto',
     },
     pos: {
       type: String,
       required: !true,
-      default: '0% 0%'
+      default: '0% 0%',
     },
     filter: {
       type: String,
       required: !true,
-      default:''
+      default: '',
     },
   },
   data() {
@@ -61,7 +59,7 @@ export default {
         // '--posY': this.posY,
         '--filter': this.filter,
       }
-    }
+    },
   },
 }
 </script>
@@ -78,7 +76,10 @@ export default {
   /* background-image: ; */
   margin: auto;
   position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   transform: translateY(var(--Yaxis));
   width: 60vw;
   max-width: 300px;

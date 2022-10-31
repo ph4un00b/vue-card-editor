@@ -7,26 +7,24 @@ export default defineComponent({
     posX: {
       type: String,
       required: !true,
-      default: '0%'
+      default: '0%',
     },
     blend: {
       type: String,
       required: !true,
-      default:'none'
+      default: 'none',
     },
     filter: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
-  setup({posX, blend, filter}, {slots,}) {
+  setup({ posX, blend, filter }, { slots }) {
     let blends = ''
     let bgImage = ''
     let zooms = ''
     let positions = ''
-    // console.log(slots.last)
-    // console.log(slots.default ? slots.default() : [])
-    slots.default().forEach(item => {
+    slots.default().forEach((item) => {
       /**
        * {
        *   "Yaxis": "-20%",
@@ -37,24 +35,20 @@ export default defineComponent({
        * }
        */
       /** XXXX: still dont know if this is the best API to fecth props data */
-      //  console.log(item.componentOptions.propsData)
-       blends += item.componentOptions.propsData.blend + ", "
-      //  console.log(item.componentOptions.propsData.bg)
-       bgImage += item.componentOptions.propsData.bg + ","
-       zooms += item.componentOptions.propsData.zoom + ","
-       positions += item.componentOptions.propsData.pos 
-        ? item.componentOptions.propsData.pos + "," 
-        : '0% 50%,'
-      })
+      blends += item.componentOptions.propsData.blend + ', '
+      bgImage += item.componentOptions.propsData.bg + ','
+      zooms += item.componentOptions.propsData.zoom + ','
+      positions += item.componentOptions.propsData.pos ? item.componentOptions.propsData.pos + ',' : '0% 50%,'
+    })
 
-  const removeLastComma = (x) => x.substring(0, x.lastIndexOf(","))
-  bgImage = removeLastComma(bgImage)
-  blends = removeLastComma(blends)
-  zooms = removeLastComma(zooms)
-  positions = removeLastComma(positions)
-  // console.log(positions)
-    return () => h("div", {
-      style: `
+    const removeLastComma = (x) => x.substring(0, x.lastIndexOf(','))
+    bgImage = removeLastComma(bgImage)
+    blends = removeLastComma(blends)
+    zooms = removeLastComma(zooms)
+    positions = removeLastComma(positions)
+    return () =>
+      h('div', {
+        style: `
       width: 80vw;
       max-width: 764px;
       mix-blend-mode: ${blend};
@@ -68,18 +62,18 @@ export default defineComponent({
       margin: auto;
       position: absolute;
       top: 0; left: 0%; bottom: 0; right: 0;
-      `
+      `,
       })
-      // border: /** debug */ 0.1rem solid;
-      // border-color: /** debug */ red;
-      // transform: /** debug */ translateX(${posX});
+    // border: /** debug */ 0.1rem solid;
+    // border-color: /** debug */ red;
+    // transform: /** debug */ translateX(${posX});
   },
 })
 </script>
 
 
 <template>
-<!-- this is avoided since we return from setup() -->
+  <!-- this is avoided since we return from setup() -->
   <div>
     <h1>{{ msg }}</h1>
     <p>
