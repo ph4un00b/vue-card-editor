@@ -20,13 +20,12 @@ export default {
     },
     render(h, context) {
       const slots = context.slots()
-      const lastLayer = context.slots().last[0]
     let blends = ''
     let bgImage = ''
     let zooms = ''
     let positions = ''
     // console.log(slots.last)
-    console.log(slots.default)
+    // console.log(slots.default)
     slots.default.forEach(item => {
       /**
        * {
@@ -57,6 +56,9 @@ export default {
   // console.log(context)
   const props = context.props;
   // console.log(props)
+
+  const lastLayer = slots?.last
+  const children = lastLayer ? [lastLayer] : []
     const html = h("div", {
       style: `
       width: 80vw;
@@ -73,7 +75,7 @@ export default {
       position: absolute;
       top: 0; left: 0%; bottom: 0; right: 0;
       `
-      }, [lastLayer])
+      }, children)
       // border: /** debug */ 0.1rem solid;
       // border-color: /** debug */ red;
       //transform: /** debug */ translateX(${props.posX});
