@@ -19,32 +19,38 @@ export default {
   },
   render(h, context) {
     const slots = context.slots()
-    let blends = ''
-    let bgImage = ''
-    let zooms = ''
-    let positions = ''
-    slots.default.forEach((item) => {
-      /**
-       * {
-       *   "Yaxis": "-20%",
-       *   "bg": "repeating-linear-gradient(...)",
-       *   "pos" "..."
-       *   "blend": "hard-light",
-       *   "zoom": "200%"
-       * }
-       */
-      /** XXXX: still dont know if this is the best API to fecth props data */
-      blends += item.componentOptions.propsData.blend + ', '
-      bgImage += item.componentOptions.propsData.bg + ','
-      zooms += item.componentOptions.propsData.zoom + ','
-      positions += item.componentOptions.propsData.pos ? item.componentOptions.propsData.pos + ',' : '0% 50%,'
-    })
+    let blendModes = ''
+    let buffers = ''
+    let bgSizes = ''
+    let bgPositions = ''
+    slots.default.forEach(
+      ({
+        componentOptions: {
+          propsData: { blend, bg, pos, zoom },
+        },
+      }) => {
+        /**
+         * {
+         *   "Yaxis": "-20%",
+         *   "bg": "repeating-linear-gradient(...)",
+         *   "pos" "..."
+         *   "blend": "hard-light",
+         *   "zoom": "200%"
+         * }
+         */
+        /** XXXX: still dont know if this is the best API to fecth props data */
+        blendModes += blend + ', '
+        buffers += bg + ','
+        bgSizes += zoom + ','
+        bgPositions += pos ? pos + ',' : '0% 50%,'
+      }
+    )
 
-    const removeLastComma = (x) => x.substring(0, x.lastIndexOf(','))
-    bgImage = removeLastComma(bgImage)
-    blends = removeLastComma(blends)
-    zooms = removeLastComma(zooms)
-    positions = removeLastComma(positions)
+    const rmLastComma = (x) => x.substring(0, x.lastIndexOf(','))
+    buffers = rmLastComma(buffers)
+    blendModes = rmLastComma(blendModes)
+    bgSizes = rmLastComma(bgSizes)
+    bgPositions = rmLastComma(bgPositions)
     const props = context.props
     const lastLayer = slots?.last
     const children = lastLayer ? [lastLayer] : []
@@ -55,11 +61,11 @@ export default {
       width: 80vw;
       max-width: 764px;
       mix-blend-mode: ${props.blend};
-      background-image: ${bgImage.trim()};
-      background-size: ${zooms};
-      background-blend-mode: ${blends};
+      background-image: ${buffers.trim()};
+      background-size: ${bgSizes};
+      background-blend-mode: ${blendModes};
       background-position: 0% 50%, 50% 50%, 50% 50%;
-      background-position: ${positions};
+      background-position: ${bgPositions};
       filter: ${props.filter};
       aspect-ratio: 5/6;
       margin: auto;
