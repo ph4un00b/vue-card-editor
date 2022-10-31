@@ -43,22 +43,27 @@ export default {
     let buffers = []
     let bgSizes = []
     let bgPositions = []
-    slots.default.forEach(
-      ({
-        componentOptions: {
-          // from <Layer />
-          propsData: { blend, bg, pos, zoom },
-        },
-      }) => {
-        /** XXXX: still dont know if this is the
-         * best API (componentOptions) to
-         * fecth props data */
-        blendModes += blend + ', '
-        buffers.push(bg ? bg : 'none')
-        bgSizes.push(zoom ? zoom : 'none')
-        bgPositions.push(pos ? pos : 'none')
-      }
-    )
+
+    if (slots?.default) {
+
+      slots?.default.forEach(
+        ({
+          componentOptions: {
+            // from <Layer />
+            propsData: { blend, bg, pos, zoom },
+          },
+        }) => {
+          /** XXXX: still dont know if this is the
+           * best API (componentOptions) to
+           * fecth props data */
+          blendModes += blend + ', '
+          buffers.push(bg ? bg : 'none')
+          bgSizes.push(zoom ? zoom : 'none')
+          bgPositions.push(pos ? pos : 'none')
+        }
+      )
+
+    }
 
     // console.log(lastLayer?.map(v => console.log(v.render())))
     const mainBuffers = () => {
@@ -73,61 +78,47 @@ export default {
       left: 0;
       `
 
-      const staticStylesCovers = `
-      width: 20vh;
-      height: 20vh;
-      max-width: calc(768px / 4);
-      // margin: auto;
-      position: absolute;
-      // border: /** debug */ 0.1rem solid;
-      // border-color: /** debug */ red;
-      right: 0;
-      `
       const tag = 'section'
-      console.log(bgSizes, isLastLayer)
-      if (isLastLayer) {
-        console.log('will generate overlay')
-        return [
-          h('portal', { props: { to: 'destination' } }, [
-            h(tag, { style: `${staticStylesCovers} background-image: ${buffers[0]}; top: 0;` }, 'buffer20'),
-            h(tag, { style: `${staticStylesCovers} background-image: ${buffers[1]}; top: 20vh;` }, 'buffer21'),
-            h(tag, { style: `${staticStylesCovers} background-image: ${buffers[2]}; top: 40vh;` }, 'buffer22'),
-            h(tag, { style: `${staticStylesCovers} background-image: ${buffers[3]}; top: 60vh;` }, 'buffer23'),
-          ]),
-        ]
-      } else {
-        console.log('will generate main')
-        const styles = (INDEX, extra = "") => ({
-          style: `
+      const styles = (INDEX, extra = "") => ({
+        style: `
           ${staticStyles}
           background-position: ${bgPositions[INDEX]};
           background-size: ${bgSizes[INDEX]};
           background-image: ${buffers[INDEX]};
           ${extra};
           `
-        })
+      })
 
-        return [
-          h(tag, styles(0, "top: 0"), 'buffer0'),
-          h(tag, styles(1, "top: 20vh"), 'buffer1'),
-          h(tag, styles(2, "top: 40vh"), 'buffer2'),
-          h(tag, styles(3, "top: 60vh"), 'buffer3'),
-        ]
-      }
+      return [
+        h(tag, styles(0, "top: 0"), 'buffer0'),
+        h(tag, styles(1, "top: 20vh"), 'buffer1'),
+        h(tag, styles(2, "top: 40vh"), 'buffer2'),
+        h(tag, styles(3, "top: 60vh"), 'buffer3'),
+      ]
+
     }
 
-    const coverBuffers = () => {
+    const overlayBuffers = () => {
+
+      const staticStylesCovers = `
+      width: 20vh;
+      height: 20vh;
+      max-width: calc(768px / 4);
+      // margin: auto;
+      position: absolute;
+      border: /** debug */ 0.1rem solid;
+      border-color: /** debug */ red;
+      right: 0;
+      `
       const tag = 'section'
-      return !isLastLayer
-        ? []
-        : [
-          h('portal-target', { props: { name: 'destination' } }, [
-            // h(tag, { style: `${staticStyles} top: 0;` }, 'buffer20'),
-            // h(tag, { style: `${staticStyles} top: 20vh;` }, 'buffer21'),
-            // h(tag, { style: `${staticStyles} top: 40vh;` }, 'buffer22'),
-            // h(tag, { style: `${staticStyles} top: 60vh;` }, 'buffer23'),
-          ]),
-        ]
+      return [
+        h('portal-target', { props: { name: 'destination' } }, [
+          h(tag, { style: `${staticStylesCovers} top: 0;` }, 'buffer20'),
+          h(tag, { style: `${staticStylesCovers} top: 20vh;` }, 'buffer21'),
+          h(tag, { style: `${staticStylesCovers} top: 40vh;` }, 'buffer22'),
+          h(tag, { style: `${staticStylesCovers} top: 60vh;` }, 'buffer23'),
+        ]),
+      ]
     }
 
     // console.log(buffers)
@@ -162,7 +153,7 @@ export default {
         children
       ),
       ...mainBuffers(),
-      ...coverBuffers(),
+      ...overlayBuffers(),
     ]
     //transform: /** debug */ translateX(${props.posX});
     return html
