@@ -38,12 +38,11 @@ export default {
     // },
   },
   render(h, context) {
-    console.log(this)
     const slots = context.slots()
     let blendModes = ''
     let buffers = []
-    let bgSizes = ''
-    let bgPositions = ''
+    let bgSizes = []
+    let bgPositions = []
     slots.default.forEach(
       ({
         componentOptions: {
@@ -55,21 +54,12 @@ export default {
          * best API (componentOptions) to
          * fecth props data */
         blendModes += blend + ', '
-        buffers.push(bg)
-        bgSizes += zoom + ','
-        bgPositions += pos ? pos + ',' : '0% 50%,'
+        buffers.push(bg ? bg : 'none')
+        bgSizes.push(zoom ? zoom : 'none')
+        bgPositions.push(pos ? pos : 'none')
       }
     )
 
-    // console.log(buffers)
-    const rmLastComma = (x) => x.substring(0, x.lastIndexOf(','))
-    // buffers = rmLastComma(buffers)
-    blendModes = rmLastComma(blendModes)
-    bgSizes = rmLastComma(bgSizes)
-    bgPositions = rmLastComma(bgPositions)
-    const props = context.props
-    const isLastLayer = slots?.last
-    const children = isLastLayer ? [slots?.last] : []
     // console.log(lastLayer?.map(v => console.log(v.render())))
     const mainBuffers = () => {
       const staticStyles = `
@@ -94,14 +84,10 @@ export default {
       right: 0;
       `
       const tag = 'section'
-      return isLastLayer
-        ? [
-          h(tag, { style: `${staticStyles} background-image: ${buffers[0]}; top: 0;` }, 'buffer0'),
-          h(tag, { style: `${staticStyles} background-image: ${buffers[1]}; top: 20vh;` }, 'buffer1'),
-          h(tag, { style: `${staticStyles} background-image: ${buffers[2]}; top: 40vh;` }, 'buffer2'),
-          h(tag, { style: `${staticStyles} background-image: ${buffers[3]}; top: 60vh;` }, 'buffer3'),
-        ]
-        : [
+      console.log(bgSizes, isLastLayer)
+      if (isLastLayer) {
+        console.log('will generate overlay')
+        return [
           h('portal', { props: { to: 'destination' } }, [
             h(tag, { style: `${staticStylesCovers} background-image: ${buffers[0]}; top: 0;` }, 'buffer20'),
             h(tag, { style: `${staticStylesCovers} background-image: ${buffers[1]}; top: 20vh;` }, 'buffer21'),
@@ -109,6 +95,25 @@ export default {
             h(tag, { style: `${staticStylesCovers} background-image: ${buffers[3]}; top: 60vh;` }, 'buffer23'),
           ]),
         ]
+      } else {
+        console.log('will generate main')
+        const styles = (INDEX, extra = "") => ({
+          style: `
+          ${staticStyles}
+          background-position: ${bgPositions[INDEX]};
+          background-size: ${bgSizes[INDEX]};
+          background-image: ${buffers[INDEX]};
+          ${extra};
+          `
+        })
+
+        return [
+          h(tag, styles(0, "top: 0"), 'buffer0'),
+          h(tag, styles(1, "top: 20vh"), 'buffer1'),
+          h(tag, styles(2, "top: 40vh"), 'buffer2'),
+          h(tag, styles(3, "top: 60vh"), 'buffer3'),
+        ]
+      }
     }
 
     const coverBuffers = () => {
@@ -125,6 +130,16 @@ export default {
         ]
     }
 
+    // console.log(buffers)
+    const rmLastComma = (x) => x.substring(0, x.lastIndexOf(','))
+    // buffers = rmLastComma(buffers)
+    blendModes = rmLastComma(blendModes)
+    // bgSizes = rmLastComma(bgSizes)
+    // bgPositions = rmLastComma(bgPositions)
+    const props = context.props
+    const isLastLayer = slots?.last
+    const children = isLastLayer ? [slots?.last] : []
+
     const html = [
       h(
         'div',
@@ -134,9 +149,9 @@ export default {
       max-width: 768px;
       mix-blend-mode: ${props.blend};
       background-image: ${buffers.join(',')};
-      background-size: ${bgSizes};
+      background-size: ${bgSizes.join(",")};
       background-blend-mode: ${blendModes};
-      background-position: ${bgPositions};
+      background-position: ${bgPositions.join(",")};
       filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
       aspect-ratio: ${props.aspect};
       margin: auto;
