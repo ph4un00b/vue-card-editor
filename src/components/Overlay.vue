@@ -44,25 +44,25 @@ export default {
         let bgSizes = []
         let bgPositions = []
 
-        slots.default.forEach(
-            ({
-                componentOptions: {
-                    // from <Layer />
-                    propsData: { blend, bg, pos, zoom },
-                },
-            }) => {
-                /** XXXX: still dont know if this is the
-                 * best API (componentOptions) to
-                 * fecth props data */
-                blendModes += blend + ', '
-                buffers.push(bg ? bg : 'none')
-                bgSizes.push(zoom ? zoom : 'auto auto')
-                bgPositions.push(pos ? pos : '0% 0%')
-            }
-        )
+        if (slots?.default) {
+            slots.default.forEach(
+                ({
+                    componentOptions: {
+                        // from <Layer />
+                        propsData: { blend, bg, pos, zoom },
+                    },
+                }) => {
+                    /** XXXX: still dont know if this is the
+                     * best API (componentOptions) to
+                     * fecth props data */
+                    blendModes += blend + ', '
+                    buffers.push(bg ? bg : 'none')
+                    bgSizes.push(zoom ? zoom : 'auto auto')
+                    bgPositions.push(pos ? pos : '0% 0%')
+                }
+            )
+        }
 
-        console.log(bgSizes)
-        console.log(bgPositions)
         // console.log(lastLayer?.map(v => console.log(v.render())))
         const attatchOverlayBuffers = () => {
             const staticStyles = `
@@ -115,8 +115,7 @@ export default {
                         background-image: ${buffers.join(',')};
                         background-size: ${bgSizes.join(",")};
                         background-blend-mode: ${blendModes};
-                        // background-position: ${bgPositions.join(",")};
-                        background-position: none, 50% 0%;
+                        background-position: ${bgPositions.join(",")};
                         filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
                         aspect-ratio: ${props.aspect};
                         margin: auto;
