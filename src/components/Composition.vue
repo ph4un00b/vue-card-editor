@@ -38,7 +38,6 @@ export default {
     // },
   },
   render(h, context) {
-
     const slots = context.slots()
     let blendModes = ''
     let buffers = ''
@@ -70,73 +69,50 @@ export default {
     const lastLayer = slots?.last
     const children = lastLayer ? [lastLayer] : []
 
-    const mainBuffers = () => !lastLayer ? [] : [
-      h(
-        'section',
-        {
-          style: `
+    const mainBuffers = () => {
+      const staticStyles = `
       width: 20vh;
       height: 20vh;
       max-width: calc(768px / 4);
       // margin: auto;
       position: absolute;
-      top: 0; left: 0;
-       border: /** debug */ 0.1rem solid;
+      border: /** debug */ 0.1rem solid;
       border-color: /** debug */ red;
-      `,
-        },
-        'buffer0'
-      ),
-      h(
-        'section',
-        {
-          style: `
-      width: 20vh;
-      height: 20vh;
-      max-width: calc(768px / 4);
-      // margin: auto;
-      position: absolute;
-      top: 20vh; left: 0;
-       border: /** debug */ 0.1rem solid;
-      border-color: /** debug */ red;
-      `,
-        },
-        'buffer1'
-      ),
-      h(
-        'section',
-        {
-          style: `
-      width: 20vh;
-      height: 20vh;
-      max-width: calc(768px / 4);
-      // margin: auto;
-      position: absolute;
-      top: 40vh; left: 0;
-       border: /** debug */ 0.1rem solid;
-      border-color: /** debug */ red;
-      `,
-        },
-        'buffer2'
-      ),
-      h(
-        'section',
-        {
-          style: `
-      width: 20vh;
-      height: 20vh;
-      max-width: calc(768px / 4);
-      // margin: auto;
-      position: absolute;
-      top: 60vh; left: 0;
-       border: /** debug */ 0.1rem solid;
-      border-color: /** debug */ red;
-      `,
-        },
-        'buffer3'
-      ),
-    ]
+      left: 0;
+      `
+      const tag = 'section'
+      return !lastLayer
+        ? []
+        : [
+            h(tag, { style: `${staticStyles} top: 0;` }, 'buffer0'),
+            h(tag, { style: `${staticStyles} top: 20vh;` }, 'buffer1'),
+            h(tag, { style: `${staticStyles} top: 40vh;` }, 'buffer2'),
+            h(tag, { style: `${staticStyles} top: 60vh;` }, 'buffer3'),
+          ]
+    }
 
+    const coverBuffers = () => {
+      const staticStyles = `
+      width: 20vh;
+      height: 20vh;
+      max-width: calc(768px / 4);
+      // margin: auto;
+      position: absolute;
+      border: /** debug */ 0.1rem solid;
+      border-color: /** debug */ red;
+      right: 0;
+      `
+      const tag = 'section'
+      return !lastLayer
+        ? []
+        : [
+            h(tag, { style: `${staticStyles} top: 0;` }, 'buffer20'),
+            h(tag, { style: `${staticStyles} top: 20vh;` }, 'buffer21'),
+            h(tag, { style: `${staticStyles} top: 40vh;` }, 'buffer22'),
+            h(tag, { style: `${staticStyles} top: 60vh;` }, 'buffer23'),
+          ]
+    }
+    
     const html = [
       h(
         'div',
@@ -159,13 +135,12 @@ export default {
         children
       ),
       ...mainBuffers(),
+      ...coverBuffers(),
     ]
     // border: /** debug */ 0.1rem solid;
     // border-color: /** debug */ red;
     //transform: /** debug */ translateX(${props.posX});
     return html
-
-
   },
   data() {
     return {}
