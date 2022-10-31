@@ -63,7 +63,7 @@ export default {
 
         // console.log(lastLayer?.map(v => console.log(v.render())))
         const attatchOverleyBuffers = () => {
-            const staticStylesCovers = `
+            const staticStyles = `
                 width: 20vh;
                 height: 20vh;
                 max-width: calc(768px / 4);
@@ -74,14 +74,22 @@ export default {
                 right: 0;
                 `
             const tag = 'section'
+            const styles = (INDEX, extra = "") => ({
+                style: `
+                    ${staticStyles}
+                    background-position: ${bgPositions[INDEX]};
+                    background-size: ${bgSizes[INDEX]};
+                    background-image: ${buffers[INDEX]};
+                    ${extra};
+                `
+            })
 
-            console.log('will generate overlay')
             return [
                 h('portal', { props: { to: 'destination' } }, [
-                    h(tag, { style: `${staticStylesCovers} background-image: ${buffers[0]}; top: 0;` }, 'buffer20'),
-                    h(tag, { style: `${staticStylesCovers} background-image: ${buffers[1]}; top: 20vh;` }, 'buffer21'),
-                    h(tag, { style: `${staticStylesCovers} background-image: ${buffers[2]}; top: 40vh;` }, 'buffer22'),
-                    h(tag, { style: `${staticStylesCovers} background-image: ${buffers[3]}; top: 60vh;` }, 'buffer23'),
+                    h(tag, styles(0, "top: 0"), 'buffer20'),
+                    h(tag, styles(1, "top: 20vh"), 'buffer21'),
+                    h(tag, styles(2, "top: 40vh"), 'buffer22'),
+                    h(tag, styles(3, "top: 60vh"), 'buffer23'),
                 ]),
             ]
         }
