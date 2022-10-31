@@ -5,17 +5,17 @@ export default {
     bright: {
       type: String,
       required: true,
-      default: ''
+      default: '',
     },
     saturate: {
       type: String,
       required: true,
-      default: ''
+      default: '',
     },
     contrast: {
       type: String,
       required: true,
-      default: ''
+      default: '',
     },
     posX: {
       type: String,
