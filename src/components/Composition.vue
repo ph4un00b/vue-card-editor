@@ -82,37 +82,47 @@ export default {
       // border-color: /** debug */ red;
       left: 0;
       `
-      const tag = 'section'
-      return !isLastLayer
-        ? []
-        : [
-            h(tag, { style: `${staticStyles} background-image: ${buffers[0]}; top: 0;` }, 'buffer0'),
-            h(tag, { style: `${staticStyles} background-image: ${buffers[1]}; top: 20vh;` }, 'buffer1'),
-            h(tag, { style: `${staticStyles} background-image: ${buffers[2]}; top: 40vh;` }, 'buffer2'),
-            h(tag, { style: `${staticStyles} background-image: ${buffers[3]}; top: 60vh;` }, 'buffer3'),
-          ]
-    }
 
-    const coverBuffers = () => {
-      const staticStyles = `
+      const staticStylesCovers = `
       width: 20vh;
       height: 20vh;
       max-width: calc(768px / 4);
       // margin: auto;
       position: absolute;
-      border: /** debug */ 0.1rem solid;
-      border-color: /** debug */ red;
+      // border: /** debug */ 0.1rem solid;
+      // border-color: /** debug */ red;
       right: 0;
       `
+      const tag = 'section'
+      return isLastLayer
+        ? [
+          h(tag, { style: `${staticStyles} background-image: ${buffers[0]}; top: 0;` }, 'buffer0'),
+          h(tag, { style: `${staticStyles} background-image: ${buffers[1]}; top: 20vh;` }, 'buffer1'),
+          h(tag, { style: `${staticStyles} background-image: ${buffers[2]}; top: 40vh;` }, 'buffer2'),
+          h(tag, { style: `${staticStyles} background-image: ${buffers[3]}; top: 60vh;` }, 'buffer3'),
+        ]
+        : [
+          h('portal', { props: { to: 'destination' } }, [
+            h(tag, { style: `${staticStylesCovers} background-image: ${buffers[0]}; top: 0;` }, 'buffer20'),
+            h(tag, { style: `${staticStylesCovers} background-image: ${buffers[1]}; top: 20vh;` }, 'buffer21'),
+            h(tag, { style: `${staticStylesCovers} background-image: ${buffers[2]}; top: 40vh;` }, 'buffer22'),
+            h(tag, { style: `${staticStylesCovers} background-image: ${buffers[3]}; top: 60vh;` }, 'buffer23'),
+          ]),
+        ]
+    }
+
+    const coverBuffers = () => {
       const tag = 'section'
       return !isLastLayer
         ? []
         : [
-            h(tag, { style: `${staticStyles} top: 0;` }, 'buffer20'),
-            h(tag, { style: `${staticStyles} top: 20vh;` }, 'buffer21'),
-            h(tag, { style: `${staticStyles} top: 40vh;` }, 'buffer22'),
-            h(tag, { style: `${staticStyles} top: 60vh;` }, 'buffer23'),
-          ]
+          h('portal-target', { props: { name: 'destination' } }, [
+            // h(tag, { style: `${staticStyles} top: 0;` }, 'buffer20'),
+            // h(tag, { style: `${staticStyles} top: 20vh;` }, 'buffer21'),
+            // h(tag, { style: `${staticStyles} top: 40vh;` }, 'buffer22'),
+            // h(tag, { style: `${staticStyles} top: 60vh;` }, 'buffer23'),
+          ]),
+        ]
     }
 
     const html = [
@@ -123,7 +133,7 @@ export default {
       width: 80vw;
       max-width: 768px;
       mix-blend-mode: ${props.blend};
-      background-image: ${buffers.join(",")};
+      background-image: ${buffers.join(',')};
       background-size: ${bgSizes};
       background-blend-mode: ${blendModes};
       background-position: ${bgPositions};
