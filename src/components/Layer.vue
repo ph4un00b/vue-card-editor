@@ -1,4 +1,5 @@
 <template>
+<!-- component template para debug! -->
   <div :style="defineCSSvars" class="layer">
     <!-- <div style="position: absolute; color: white; top: 0;">
       + {{blend}} + {{Yaxis}}
