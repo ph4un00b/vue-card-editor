@@ -2,6 +2,11 @@
 export default {
   functional: true,
   props: {
+    aspect: {
+      type: String,
+      required: !true,
+      default: '5/6',
+    },
     bright: {
       type: String,
       required: true,
@@ -41,19 +46,13 @@ export default {
     slots.default.forEach(
       ({
         componentOptions: {
+          // from <Layer />
           propsData: { blend, bg, pos, zoom },
         },
       }) => {
-        /**
-         * {
-         *   "Yaxis": "-20%",
-         *   "bg": "repeating-linear-gradient(...)",
-         *   "pos" "..."
-         *   "blend": "hard-light",
-         *   "zoom": "200%"
-         * }
-         */
-        /** XXXX: still dont know if this is the best API to fecth props data */
+        /** XXXX: still dont know if this is the
+         * best API (componentOptions) to
+         * fecth props data */
         blendModes += blend + ', '
         buffers += bg + ','
         bgSizes += zoom + ','
@@ -81,7 +80,7 @@ export default {
       background-blend-mode: ${blendModes};
       background-position: ${bgPositions};
       filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
-      aspect-ratio: 5/6;
+      aspect-ratio: ${props.aspect};
       margin: auto;
       position: absolute;
       top: 0; left: 0%; bottom: 0; right: 0;
