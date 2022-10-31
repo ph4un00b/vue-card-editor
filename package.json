@@ -9,9 +9,11 @@
   "devDependencies": {
     "vite": "^3",
     "vite-plugin-vue2": "^2",
+    "@vue/runtime-dom": "latest",
     "vue-template-compiler": "^2"
   },
   "dependencies": {
+    "portal-vue": "^2.1.7",
     "vue": "^2"
   }
 }
