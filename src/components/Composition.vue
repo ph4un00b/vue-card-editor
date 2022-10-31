@@ -2,6 +2,21 @@
 export default {
   functional: true,
   props: {
+    bright: {
+      type: String,
+      required: true,
+      default: ''
+    },
+    saturate: {
+      type: String,
+      required: true,
+      default: ''
+    },
+    contrast: {
+      type: String,
+      required: true,
+      default: ''
+    },
     posX: {
       type: String,
       required: !true,
@@ -12,10 +27,10 @@ export default {
       required: !true,
       default: 'none',
     },
-    filter: {
-      type: String,
-      required: true,
-    },
+    // filter: {
+    //   type: String,
+    //   required: true,
+    // },
   },
   render(h, context) {
     const slots = context.slots()
@@ -64,9 +79,8 @@ export default {
       background-image: ${buffers.trim()};
       background-size: ${bgSizes};
       background-blend-mode: ${blendModes};
-      background-position: 0% 50%, 50% 50%, 50% 50%;
       background-position: ${bgPositions};
-      filter: ${props.filter};
+      filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
       aspect-ratio: 5/6;
       margin: auto;
       position: absolute;
