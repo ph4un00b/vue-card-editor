@@ -87,6 +87,9 @@ export default defineComponent({
       // "revert-layer",
       // "unset"
     ]
+
+    let positionX = 50
+    let positionY = 50
     return {
       // background: '#cdeecc',
       // titleFontSize: 75,
@@ -106,7 +109,7 @@ export default defineComponent({
         blend: blends[6].value,
         bright: 0.5,
         contrast: 2.0,
-        saturate: 1.5
+        saturate: 3.5
       },
       overlay: {
         // exclusion
@@ -115,6 +118,7 @@ export default defineComponent({
         contrast: 1.6,
         saturate: 1.4
       },
+
       b0: {
         zoom: 50,
         // exclusion
@@ -199,15 +203,15 @@ export default defineComponent({
 
     <!-- https://images.pokemontcg.io/swsh1/190_hires.png -->
     <!-- https://www.joshdance.com/100/day50/images/varian.png -->
-    <!-- https://imgix.cosmicjs.com/3714a060-45b1-11ed-8ad7-d16a9b880dcb-Mat.-Joe.jpg -->
-    <!-- https://imgix.cosmicjs.com/9d2dbb80-45c4-11ed-8ad7-d16a9b880dcb-Einmusik-Mia.jpg -->
-    <!-- https://imgix.cosmicjs.com/9bad6330-466b-11ed-a07b-05c6717a9348-LAOLU.jpg -->
+    <!--  -->
+    <!-- -->
+    <!--  -->
     <section style="
             aspect-ratio: 5/6;
             display: grid;
             grid-area: 1/1;
-            width: 50vw;
-            max-width: 768px;
+            width: 40vw;
+            max-width: 25rem;
             margin: auto;
             position: absolute;
             top: 0; left: 0; bottom: 0; right: 0;
@@ -215,8 +219,8 @@ export default defineComponent({
             // border-color: /** debug */ red;">
 
 
-      <img style="width: 100%; display: grid; grid-area: 1/1;"
-        src="https://imgix.cosmicjs.com/9bad6330-466b-11ed-a07b-05c6717a9348-LAOLU.jpg" alt="">
+      <!-- <img style="width: 100%; display: grid; grid-area: 1/1;"
+        src="https://imgix.cosmicjs.com/9bad6330-466b-11ed-a07b-05c6717a9348-LAOLU.jpg" alt=""> -->
 
       <Composition :debug="showDebug" :blend="composition.blend" :bright="composition.bright"
         :contrast="composition.contrast" :saturate="composition.saturate">
@@ -228,6 +232,7 @@ export default defineComponent({
           bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)" />
         <Layer :blend="b3.blend" :zoom="b3.zoom + '%'" :pos="b3.posX + '% ' + b3.posY + '%'"
           bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)" />
+
       </Composition>
 
       <Overlay :blend="overlay.blend" :bright="overlay.bright" :contrast="overlay.contrast"
