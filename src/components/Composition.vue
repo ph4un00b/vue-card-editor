@@ -8,19 +8,19 @@ export default {
       default: '5/6',
     },
     bright: {
-      type: String,
+      type: Number,
       required: true,
-      default: '',
+      default: 1,
     },
     saturate: {
-      type: String,
+      type: Number,
       required: true,
-      default: '',
+      default: 0,
     },
     contrast: {
-      type: String,
+      type: Number,
       required: true,
-      default: '',
+      default: 1,
     },
     posX: {
       type: String,
@@ -68,15 +68,15 @@ export default {
     // console.log(lastLayer?.map(v => console.log(v.render())))
     const attachMainBuffers = () => {
       const staticStyles = `
-      width: 20vh;
-      height: 20vh;
-      max-width: calc(768px / 4);
-      // margin: auto;
-      position: absolute;
-      // border: /** debug */ 0.1rem solid;
-      // border-color: /** debug */ red;
-      left: 0;
-      `
+        width: 20vh;
+        height: 20vh;
+        max-width: calc(768px / 4);
+        position: absolute;
+        // margin: auto;
+        // border: /** debug */ 0.1rem solid;
+        // border-color: /** debug */ red;
+        left: 0;
+        `
 
       const tag = 'section'
       const styles = (INDEX, extra = "") => ({

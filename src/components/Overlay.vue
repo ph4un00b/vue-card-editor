@@ -8,19 +8,19 @@ export default {
             default: '5/6',
         },
         bright: {
-            type: String,
+            type: Number,
             required: true,
-            default: '',
+            default: 1,
         },
         saturate: {
-            type: String,
+            type: Number,
             required: true,
-            default: '',
+            default: 0,
         },
         contrast: {
-            type: String,
+            type: Number,
             required: true,
-            default: '',
+            default: 1,
         },
         posX: {
             type: String,
@@ -108,18 +108,18 @@ export default {
             'div',
             {
                 style: `
-                        width: 80vw;
-                        max-width: 768px;
-                        mix-blend-mode: ${props.blend};
-                        background-image: ${buffers.join(',')};
-                        background-size: ${bgSizes.join(",")};
-                        background-blend-mode: ${blendModes};
-                        background-position: ${bgPositions.join(",")};
-                        filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
-                        aspect-ratio: ${props.aspect};
-                        margin: auto;
-                        position: absolute;
-                        top: 0; left: 0%; bottom: 0; right: 0;
+                    width: 80vw;
+                    max-width: 768px;
+                    mix-blend-mode: ${props.blend};
+                    background-image: ${buffers.join(',')};
+                    background-size: ${bgSizes.join(",")};
+                    background-blend-mode: ${blendModes};
+                    background-position: ${bgPositions.join(",")};
+                    filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
+                    aspect-ratio: ${props.aspect};
+                    margin: auto;
+                    position: absolute;
+                    top: 0; left: 0%; bottom: 0; right: 0;
                         `,
                 slots
             },
