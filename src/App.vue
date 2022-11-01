@@ -1,4 +1,5 @@
 <script>
+import Vue from 'vue'
 import { defineComponent } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 import Test from './components/Test.vue'
@@ -7,7 +8,6 @@ import Composition from './components/Composition.vue'
 import Overlay from './components/Overlay.vue'
 import { Portal, PortalTarget } from 'portal-vue'
 import DatGui from '@cyrilf/vue-dat-gui'
-import Vue from 'vue'
 Vue.use(DatGui)
 
 export default defineComponent({
@@ -88,19 +88,19 @@ export default defineComponent({
       // "unset"
     ]
     return {
-      background: '#cdeecc',
-      titleFontSize: 75,
-      title: 'vue-dat-gui',
-      showPicture: true,
+      // background: '#cdeecc',
+      // titleFontSize: 75,
+      // title: 'vue-dat-gui',
+      // showPicture: true,
       blends,
       // pictureUrl: pictures[0].value,
-      boxShadow: {
-        offsetX: 27,
-        offsetY: 27,
-        blurRadius: 75,
-        spreadRadius: 2,
-        color: 'rgba(3, 23, 6, 1)',
-      },
+      // boxShadow: {
+      //   offsetX: 27,
+      //   offsetY: 27,
+      //   blurRadius: 75,
+      //   spreadRadius: 2,
+      //   color: 'rgba(3, 23, 6, 1)',
+      // },
       composition: {
         // color-dodge
         blend: blends[6].value,
@@ -192,30 +192,52 @@ export default defineComponent({
 <template>
   <div id="app">
 
-    <Composition aspect="5/6" :blend="composition.blend" :bright="composition.bright" :contrast="composition.contrast"
-      :saturate="composition.saturate">
-      <!-- https://uigradients.com/#Shahabi -->
-      <Layer :blend="b0.blend" :zoom="b0.zoom + '%'" :pos="b0.posX + '% ' + b0.posY + '%'"
-        bg="url(src/assets/noise-layer.webp)" />
-      <Layer :blend="b1.blend" :zoom="b1.zoomW + '% ' + b1.zoomH + '%'" :pos="b1.posX + '% ' + b1.posY + '%'"
-        bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))" />
-      <Layer :blend="b2.blend" :zoom="b2.zoom + '%'" :pos="b2.posX + '% ' + b2.posY + '%'"
-        bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)" />
-      <Layer :blend="b3.blend" :zoom="b3.zoom + '%'" :pos="b3.posX + '% ' + b3.posY + '%'"
-        bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)" />
-    </Composition>
+    <!-- https://images.pokemontcg.io/swsh1/190_hires.png -->
+    <!-- https://www.joshdance.com/100/day50/images/varian.png -->
 
-    <Overlay aspect="5/6" :blend="overlay.blend" :bright="overlay.bright" :contrast="overlay.contrast"
-      :saturate="overlay.saturate">
-      <Layer :blend="b20.blend" :zoom="b21.zoomW + '% ' + b21.zoomH + '%'" :pos="b20.posX + '% ' + b20.posY + '%'"
-        bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))" />
-      <Layer :blend="b21.blend" :zoom="b20.zoom + '%'" :pos="b21.posX + '% ' + b21.posY + '%'"
-        bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)" />
-      <Layer :blend="b22.blend" :zoom="b22.zoom + '%'" :pos="b22.posX + '% ' + b22.posY + '%'"
-        bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)" />
-      <Layer :blend="b23.blend" :zoom="b23.zoom + '%'" :pos="b23.posX + '% ' + b23.posY + '%'"
-        bg="url(src/assets/noise-layer.webp)" />
-    </Overlay>
+    <section style="
+            aspect-ratio: 5/6;
+            display: grid;
+            grid-area: 1/1;
+            width: 60vw;
+            max-width: 768px;
+            margin: auto;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            border: /** debug */ 0.1rem solid;
+            border-color: /** debug */ red;">
+
+
+      <img style="width: 100%; display: grid; grid-area: 1/1;"
+        src="https://www.joshdance.com/100/day50/images/varian.png" alt="">
+
+      <Composition :blend="composition.blend" :bright="composition.bright" :contrast="composition.contrast"
+        :saturate="composition.saturate">
+        <Layer :blend="b0.blend" :zoom="b0.zoom + '%'" :pos="b0.posX + '% ' + b0.posY + '%'"
+          bg="url(src/assets/noise-layer.webp)" />
+        <Layer :blend="b1.blend" :zoom="b1.zoomW + '% ' + b1.zoomH + '%'" :pos="b1.posX + '% ' + b1.posY + '%'"
+          bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))" />
+        <Layer :blend="b2.blend" :zoom="b2.zoom + '%'" :pos="b2.posX + '% ' + b2.posY + '%'"
+          bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)" />
+        <Layer :blend="b3.blend" :zoom="b3.zoom + '%'" :pos="b3.posX + '% ' + b3.posY + '%'"
+          bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)" />
+      </Composition>
+
+      <Overlay :blend="overlay.blend" :bright="overlay.bright" :contrast="overlay.contrast"
+        :saturate="overlay.saturate">
+        <Layer :blend="b20.blend" :zoom="b21.zoomW + '% ' + b21.zoomH + '%'" :pos="b20.posX + '% ' + b20.posY + '%'"
+          bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))" />
+        <Layer :blend="b21.blend" :zoom="b20.zoom + '%'" :pos="b21.posX + '% ' + b21.posY + '%'"
+          bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)" />
+        <Layer :blend="b22.blend" :zoom="b22.zoom + '%'" :pos="b22.posX + '% ' + b22.posY + '%'"
+          bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)" />
+        <Layer :blend="b23.blend" :zoom="b23.zoom + '%'" :pos="b23.posX + '% ' + b23.posY + '%'"
+          bg="url(src/assets/noise-layer.webp)" />
+      </Overlay>
+
+    </section>
+
+
 
     <dat-gui closed style="position: absolute; left: 50%;" closeText="Close controls" openText="Open controls"
       closePosition="bottom">
