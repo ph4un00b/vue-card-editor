@@ -128,13 +128,12 @@ export default {
 
     // console.log(buffers)
     const rmLastComma = (x) => x.substring(0, x.lastIndexOf(','))
-    // buffers = rmLastComma(buffers)
     blendModes = rmLastComma(blendModes)
-    // bgSizes = rmLastComma(bgSizes)
-    // bgPositions = rmLastComma(bgPositions)
     const props = context.props
     const isLastLayer = slots?.last
-    const children = isLastLayer ? [slots?.last] : []
+    // we used children but i prefer to have the
+    // children component <Overlay> as a sibling
+    const childrenOverlay = isLastLayer ? [slots?.last] : []
 
     const html = [
       h(

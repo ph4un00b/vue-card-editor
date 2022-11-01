@@ -1,8 +1,6 @@
 <script>
 import Vue from 'vue'
 import { defineComponent } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
-import Test from './components/Test.vue'
 import Layer from './components/Layer.vue'
 import Composition from './components/Composition.vue'
 import Overlay from './components/Overlay.vue'
@@ -10,11 +8,11 @@ import { Portal, PortalTarget } from 'portal-vue'
 import DatGui from '@cyrilf/vue-dat-gui'
 Vue.use(DatGui)
 
+
+
 export default defineComponent({
   name: 'App',
   components: {
-    Test,
-    HelloWorld,
     Layer,
     Composition,
     Portal,
@@ -88,9 +86,11 @@ export default defineComponent({
       // "unset"
     ]
 
-    let positionX = 50
-    let positionY = 50
+
     return {
+      timerId: null,
+      start: performance.now(),
+      utime: 0,
       // background: '#cdeecc',
       // titleFontSize: 75,
       // title: 'vue-dat-gui',
@@ -183,18 +183,29 @@ export default defineComponent({
         posY: 50,
         angle: 0,
       },
+      animate: !false,
+      animationVelocity: 0.015
     }
   },
-  computed: {
-    b1Zoom() {
-      return this.b1.zoomW + '% ' + this.b1.zoomH + '%'
-    }
-  },
+  computed: {},
   methods: {
-    triggerAlert() {
-      alert('Yeah, you pressed it!')
+    startTime() {
+      this.loop()
     },
-  }
+    loop() {
+      if (this.animate) {
+        this.utime = Math.floor(performance.now() * this.animationVelocity)
+      }
+      // console.log(this.utime);
+      this.timerId = window.requestAnimationFrame(this.loop);
+    }
+  },
+  mounted() {
+    this.startTime();
+  },
+  beforeDestroy() {
+    window.cancelAnimationFrame(this.timerId)
+  },
 })
 </script>
 
@@ -206,6 +217,7 @@ export default defineComponent({
     <!--  -->
     <!-- -->
     <!--  -->
+    <pre v-if="showDebug">{{ utime }}</pre>
     <section style="
             aspect-ratio: 5/6;
             display: grid;
@@ -219,8 +231,8 @@ export default defineComponent({
             // border-color: /** debug */ red;">
 
 
-      <!-- <img style="width: 100%; display: grid; grid-area: 1/1;"
-        src="https://imgix.cosmicjs.com/9bad6330-466b-11ed-a07b-05c6717a9348-LAOLU.jpg" alt=""> -->
+      <img style="width: 100%; display: grid; grid-area: 1/1;"
+        src="https://imgix.cosmicjs.com/9bad6330-466b-11ed-a07b-05c6717a9348-LAOLU.jpg" alt="">
 
       <Composition :debug="showDebug" :blend="composition.blend" :bright="composition.bright"
         :contrast="composition.contrast" :saturate="composition.saturate">
@@ -228,7 +240,7 @@ export default defineComponent({
           bg="url(src/assets/noise-layer.webp)" />
         <Layer :blend="b1.blend" :zoom="b1.zoomW + '% ' + b1.zoomH + '%'" :pos="b1.posX + '% ' + b1.posY + '%'"
           bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))" />
-        <Layer :blend="b2.blend" :zoom="b2.zoom + '%'" :pos="b2.posX + '% ' + b2.posY + '%'"
+        <Layer :blend="b2.blend" :zoom="b2.zoom + '%'" :pos="b2.posX + utime + '% ' + b2.posY + '%'"
           bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)" />
         <Layer :blend="b3.blend" :zoom="b3.zoom + '%'" :pos="b3.posX + '% ' + b3.posY + '%'"
           bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)" />
@@ -241,7 +253,8 @@ export default defineComponent({
           bg="url(src/assets/noise-layer.webp)" />
         <Layer :blend="b21.blend" :zoom="b21.zoomW + '% ' + b21.zoomH + '%'" :pos="b21.posX + '% ' + b21.posY + '%'"
           bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))" />
-        <Layer blend="hard-light" :blend="b22.blend" :zoom="b22.zoom + '%'" :pos="b22.posX + '% ' + b22.posY + '%'"
+        <Layer blend="hard-light" :blend="b22.blend" :zoom="b22.zoom + '%'"
+          :pos="-(b22.posX + utime) + '% ' + b22.posY + '%'"
           bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)" />
         <Layer blend="exclusion" :blend="b23.blend" :zoom="b23.zoom + '%'" :pos="b23.posX + '% ' + b23.posY + '%'"
           bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)" />
@@ -326,6 +339,8 @@ export default defineComponent({
         <dat-number v-model="overlay.saturate" :min="0" :max="10" :step="0.01" label="saturate" />
       </dat-folder>
       <dat-boolean v-model="showDebug" label="Show Debug" />
+      <dat-boolean v-model="animate" label="animate?" />
+      <dat-number v-model="animationVelocity" :min="0" :max="0.9" :step="0.001" label="Y" />
     </dat-gui>
   </div>
 
