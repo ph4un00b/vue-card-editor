@@ -184,7 +184,8 @@ export default defineComponent({
         angle: 0,
       },
       animate: !false,
-      animationVelocity: 0.015
+      animationVelocity: 0.015,
+      photo: "https://imgix.cosmicjs.com/55c66c50-32b5-11ed-8a37-f1952c73e588-hernanmia.jpeg.jpg?w=240&auto=format"
     }
   },
   computed: {},
@@ -212,7 +213,7 @@ export default defineComponent({
 <template>
   <div id="app">
 
-    <!-- https://images.pokemontcg.io/swsh1/190_hires.png -->
+    <!--  -->
     <!-- https://www.joshdance.com/100/day50/images/varian.png -->
     <!--  -->
     <!-- -->
@@ -232,7 +233,7 @@ export default defineComponent({
 
 
       <img style="width: 100%; display: grid; grid-area: 1/1;"
-        src="https://imgix.cosmicjs.com/9bad6330-466b-11ed-a07b-05c6717a9348-LAOLU.jpg" alt="">
+        :src="photo" alt="">
 
       <Composition :debug="showDebug" :blend="composition.blend" :bright="composition.bright"
         :contrast="composition.contrast" :saturate="composition.saturate">
@@ -340,7 +341,8 @@ export default defineComponent({
       </dat-folder>
       <dat-boolean v-model="showDebug" label="Show Debug" />
       <dat-boolean v-model="animate" label="animate?" />
-      <dat-number v-model="animationVelocity" :min="0" :max="0.9" :step="0.001" label="Y" />
+      <dat-number v-model="animationVelocity" :min="0" :max="0.9" :step="0.001" label="velocity" />
+      <dat-string v-model="photo" label="photo" />
     </dat-gui>
   </div>
 
