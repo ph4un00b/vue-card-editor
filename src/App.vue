@@ -91,7 +91,7 @@ export default defineComponent({
       // background: '#cdeecc',
       // titleFontSize: 75,
       // title: 'vue-dat-gui',
-      // showPicture: true,
+      showDebug: !true,
       blends,
       // pictureUrl: pictures[0].value,
       // boxShadow: {
@@ -211,15 +211,15 @@ export default defineComponent({
             margin: auto;
             position: absolute;
             top: 0; left: 0; bottom: 0; right: 0;
-            border: /** debug */ 0.1rem solid;
-            border-color: /** debug */ red;">
+            // border: /** debug */ 0.1rem solid;
+            // border-color: /** debug */ red;">
 
 
-      <!-- <img style="width: 100%; display: grid; grid-area: 1/1;"
-        src="https://imgix.cosmicjs.com/9bad6330-466b-11ed-a07b-05c6717a9348-LAOLU.jpg" alt=""> -->
+      <img style="width: 100%; display: grid; grid-area: 1/1;"
+        src="https://imgix.cosmicjs.com/9bad6330-466b-11ed-a07b-05c6717a9348-LAOLU.jpg" alt="">
 
-      <Composition :blend="composition.blend" :bright="composition.bright" :contrast="composition.contrast"
-        :saturate="composition.saturate">
+      <Composition :debug="showDebug" :blend="composition.blend" :bright="composition.bright"
+        :contrast="composition.contrast" :saturate="composition.saturate">
         <Layer :blend="b0.blend" :zoom="b0.zoom + '%'" :pos="b0.posX + '% ' + b0.posY + '%'"
           bg="url(src/assets/noise-layer.webp)" />
         <Layer :blend="b1.blend" :zoom="b1.zoomW + '% ' + b1.zoomH + '%'" :pos="b1.posX + '% ' + b1.posY + '%'"
@@ -320,6 +320,7 @@ export default defineComponent({
         <dat-number v-model="overlay.contrast" :min="0" :max="10" :step="0.01" label="contrast" />
         <dat-number v-model="overlay.saturate" :min="0" :max="10" :step="0.01" label="saturate" />
       </dat-folder>
+      <dat-boolean v-model="showDebug" label="Show Debug" />
     </dat-gui>
   </div>
 

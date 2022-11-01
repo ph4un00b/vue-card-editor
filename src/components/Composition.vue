@@ -32,6 +32,11 @@ export default {
       required: !true,
       default: 'none',
     },
+    debug: {
+      type: Boolean,
+      required: !true,
+      default: true
+    }
     // filter: {
     //   type: String,
     //   required: true,
@@ -161,7 +166,30 @@ export default {
       ...createOverlayBuffers(),
     ]
     //transform: /** debug */ translateX(${props.posX});
-    return html
+    if (props.debug) {
+      return html
+    }
+    return h(
+      'div',
+      {
+        style: `
+            display: grid;
+            grid-area: 1/1;
+            width: 100%;
+            // width: 60vw;
+            height: 100%
+            // max-width: 768px;
+            mix-blend-mode: ${props.blend};
+            background-image: ${buffers.join(',')};
+            background-size: ${bgSizes.join(",")};
+            background-blend-mode: ${blendModes};
+            background-position: ${bgPositions.join(",")};
+            filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
+            aspect-ratio: ${props.aspect};
+      `,
+      },
+      [h('portal-target', { props: { name: 'overlay' } }, [])]
+    )
   },
   data() {
     return {}
