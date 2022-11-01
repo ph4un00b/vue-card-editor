@@ -145,33 +145,38 @@ export default defineComponent({
         posY: 50,
         angle: 0,
       }, b20: {
-        zoom: 200,
-        // hue
-        blend: blends[12].value,
-        posX: 0,
-        posY: 0,
-        angle: 0,
-      }, b21: {
-        zoomW: 100,
-        zoomH: 700,
-        // hard-light
-        blend: blends[8].value,
-        posX: 0,
-        posY: 0,
-        angle: 0,
-      }, b22: {
-        zoom: 200,
-        // exclusion
-        blend: blends[11].value,
-        posX: 0,
-        posY: 0,
-        angle: 0,
-      }, b23: {
+        // pos="50% 50%" zoom="50%"
         zoom: 50,
         // exclusion
         blend: blends[11].value,
         posX: 50,
+        posY: 50,
+        angle: 0,
+      }, b21: {
+        // pos="0% 50%" zoom="200% 400%"
+        zoomW: 200,
+        zoomH: 400,
+        // hue
+        blend: blends[12].value,
+
+        posX: 0,
+        posY: 50,
+        angle: 0,
+      }, b22: {
+        // pos="-50% -50%" zoom="200%"
+        zoom: 200,
+        // hard-light
+        blend: blends[8].value,
+        posX: 50,
         posY: 0,
+        angle: 0,
+      }, b23: {
+        // pos="50% 50%" zoom="200%"
+        zoom: 200,
+        // exclusion
+        blend: blends[11].value,
+        posX: 50,
+        posY: 50,
         angle: 0,
       },
     }
@@ -194,12 +199,14 @@ export default defineComponent({
 
     <!-- https://images.pokemontcg.io/swsh1/190_hires.png -->
     <!-- https://www.joshdance.com/100/day50/images/varian.png -->
-
+    <!-- https://imgix.cosmicjs.com/3714a060-45b1-11ed-8ad7-d16a9b880dcb-Mat.-Joe.jpg -->
+    <!-- https://imgix.cosmicjs.com/9d2dbb80-45c4-11ed-8ad7-d16a9b880dcb-Einmusik-Mia.jpg -->
+    <!-- https://imgix.cosmicjs.com/9bad6330-466b-11ed-a07b-05c6717a9348-LAOLU.jpg -->
     <section style="
             aspect-ratio: 5/6;
             display: grid;
             grid-area: 1/1;
-            width: 60vw;
+            width: 50vw;
             max-width: 768px;
             margin: auto;
             position: absolute;
@@ -208,8 +215,8 @@ export default defineComponent({
             border-color: /** debug */ red;">
 
 
-      <img style="width: 100%; display: grid; grid-area: 1/1;"
-        src="https://www.joshdance.com/100/day50/images/varian.png" alt="">
+      <!-- <img style="width: 100%; display: grid; grid-area: 1/1;"
+        src="https://imgix.cosmicjs.com/9bad6330-466b-11ed-a07b-05c6717a9348-LAOLU.jpg" alt=""> -->
 
       <Composition :blend="composition.blend" :bright="composition.bright" :contrast="composition.contrast"
         :saturate="composition.saturate">
@@ -225,16 +232,15 @@ export default defineComponent({
 
       <Overlay :blend="overlay.blend" :bright="overlay.bright" :contrast="overlay.contrast"
         :saturate="overlay.saturate">
-        <Layer :blend="b20.blend" :zoom="b21.zoomW + '% ' + b21.zoomH + '%'" :pos="b20.posX + '% ' + b20.posY + '%'"
-          bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))" />
-        <Layer :blend="b21.blend" :zoom="b20.zoom + '%'" :pos="b21.posX + '% ' + b21.posY + '%'"
-          bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)" />
-        <Layer :blend="b22.blend" :zoom="b22.zoom + '%'" :pos="b22.posX + '% ' + b22.posY + '%'"
-          bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)" />
-        <Layer :blend="b23.blend" :zoom="b23.zoom + '%'" :pos="b23.posX + '% ' + b23.posY + '%'"
+        <Layer :blend="b20.blend" :pos="b20.posX + '% ' + b20.posY + '%'" :zoom="b20.zoom + '%'"
           bg="url(src/assets/noise-layer.webp)" />
+        <Layer :blend="b21.blend" :zoom="b21.zoomW + '% ' + b21.zoomH + '%'" :pos="b21.posX + '% ' + b21.posY + '%'"
+          bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))" />
+        <Layer blend="hard-light" :blend="b22.blend" :zoom="b22.zoom + '%'" :pos="b22.posX + '% ' + b22.posY + '%'"
+          bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)" />
+        <Layer blend="exclusion" :blend="b23.blend" :zoom="b23.zoom + '%'" :pos="b23.posX + '% ' + b23.posY + '%'"
+          bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)" />
       </Overlay>
-
     </section>
 
 
@@ -275,8 +281,8 @@ export default defineComponent({
       <dat-folder label="b20" closed>
         <dat-select v-model="b20.blend" :items="blends" label="Blend" />
         <dat-number v-model="b20.zoom" :min="0" :max="1000" :step="1" label="Zoom" />
-        <dat-number v-model="b20.posX" :min="0" :max="1000" :step="1" label="X" />
-        <dat-number v-model="b20.posY" :min="0" :max="1000" :step="1" label="Y" />
+        <dat-number v-model="b20.posX" :min="0" :max="200" :step="0.5" label="X" />
+        <dat-number v-model="b20.posY" :min="0" :max="200" :step="0.5" label="Y" />
       </dat-folder>
 
       <dat-folder label="b21" closed>

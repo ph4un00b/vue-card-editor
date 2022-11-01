@@ -111,6 +111,7 @@ export default {
                     display: grid;
                     grid-area: 1/1;
                     width: 100%;
+                    // width: 60vw;
                     height: 100%
                     // max-width: 768px;
                     mix-blend-mode: ${props.blend};
@@ -119,7 +120,7 @@ export default {
                     background-blend-mode: ${blendModes};
                     background-position: ${bgPositions.join(",")};
                     filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
-                    // aspect-ratio: ${props.aspect};
+                    aspect-ratio: ${props.aspect};
                         `,
                 slots
             },
