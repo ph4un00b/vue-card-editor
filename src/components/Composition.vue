@@ -66,7 +66,7 @@ export default {
     }
 
     // console.log(lastLayer?.map(v => console.log(v.render())))
-    const mainBuffers = () => {
+    const attachMainBuffers = () => {
       const staticStyles = `
       width: 20vh;
       height: 20vh;
@@ -98,16 +98,16 @@ export default {
 
     }
 
-    const overlayBuffers = () => {
+    const createOverlayBuffers = () => {
 
       const staticStylesCovers = `
       width: 20vh;
       height: 20vh;
       max-width: calc(768px / 4);
-      // margin: auto;
       position: absolute;
-      border: /** debug */ 0.1rem solid;
-      border-color: /** debug */ red;
+      // margin: auto;
+      // border: /** debug */ 0.1rem solid;
+      // border-color: /** debug */ red;
       right: 0;
       `
       const tag = 'section'
@@ -136,24 +136,28 @@ export default {
         'div',
         {
           style: `
-      width: 80vw;
-      max-width: 768px;
-      mix-blend-mode: ${props.blend};
-      background-image: ${buffers.join(',')};
-      background-size: ${bgSizes.join(",")};
-      background-blend-mode: ${blendModes};
-      background-position: ${bgPositions.join(",")};
-      filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
-      aspect-ratio: ${props.aspect};
-      margin: auto;
-      position: absolute;
-      top: 0; left: 0%; bottom: 0; right: 0;
+            width: 80vw;
+            max-width: 768px;
+            mix-blend-mode: ${props.blend};
+            background-image: ${buffers.join(',')};
+            background-size: ${bgSizes.join(",")};
+            background-blend-mode: ${blendModes};
+            background-position: ${bgPositions.join(",")};
+            filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
+            aspect-ratio: ${props.aspect};
+            margin: auto;
+            position: absolute;
+            top: 0; left: 0%; bottom: 0; right: 0;
       `,
         },
-        children
+        [
+          h('portal-target', { props: { name: 'overlay' } }, [])
+        ],
+
+        // children
       ),
-      ...mainBuffers(),
-      ...overlayBuffers(),
+      ...attachMainBuffers(),
+      ...createOverlayBuffers(),
     ]
     //transform: /** debug */ translateX(${props.posX});
     return html

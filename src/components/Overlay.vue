@@ -69,8 +69,8 @@ export default {
                 width: 20vh;
                 height: 20vh;
                 max-width: calc(768px / 4);
-                // margin: auto;
                 position: absolute;
+                // margin: auto;
                 // border: /** debug */ 0.1rem solid;
                 // border-color: /** debug */ red;
                 right: 0;
@@ -104,11 +104,10 @@ export default {
         // bgPositions = rmLastComma(bgPositions)
         const props = context.props
 
-        const html = [
-            h(
-                'div',
-                {
-                    style: `
+        const overlayHTML = h(
+            'div',
+            {
+                style: `
                         width: 80vw;
                         max-width: 768px;
                         mix-blend-mode: ${props.blend};
@@ -122,7 +121,14 @@ export default {
                         position: absolute;
                         top: 0; left: 0%; bottom: 0; right: 0;
                         `,
-                },
+                slots
+            },
+        )
+
+        const html = [
+            h('portal', { props: { to: 'overlay' } }, [
+                overlayHTML
+            ]
             ),
             ...attatchOverlayBuffers()
         ]
