@@ -8,8 +8,6 @@ import { Portal, PortalTarget } from 'portal-vue'
 import DatGui from '@cyrilf/vue-dat-gui'
 Vue.use(DatGui)
 
-
-
 export default defineComponent({
   name: 'App',
   components: {
@@ -17,75 +15,74 @@ export default defineComponent({
     Composition,
     Portal,
     PortalTarget,
-    Overlay
+    Overlay,
   },
   data() {
     const blends = [
       {
-        value: "normal",
-        name: "normal"
+        value: 'normal',
+        name: 'normal',
       },
       {
-        value: "multiply",
-        name: "multiply"
+        value: 'multiply',
+        name: 'multiply',
       },
       {
-        value: "screen",
-        name: "screen"
+        value: 'screen',
+        name: 'screen',
       },
       {
-        value: "overlay",
-        name: "overlay"
+        value: 'overlay',
+        name: 'overlay',
       },
       {
-        value: "darken",
-        name: "darken"
+        value: 'darken',
+        name: 'darken',
       },
       {
-        value: "lighten",
-        name: "lighten"
+        value: 'lighten',
+        name: 'lighten',
       },
-      { value: "color-dodge", name: "color-dodge" },
+      { value: 'color-dodge', name: 'color-dodge' },
       {
-        value: "color-burn",
-        name: "color-burn"
-      },
-      {
-        value: "hard-light",
-        name: "hard-light"
+        value: 'color-burn',
+        name: 'color-burn',
       },
       {
-        value: "soft-light",
-        name: "soft-light"
+        value: 'hard-light',
+        name: 'hard-light',
       },
       {
-        value: "difference",
-        name: "difference"
+        value: 'soft-light',
+        name: 'soft-light',
       },
       {
-        value: "exclusion",
-        name: "exclusion"
+        value: 'difference',
+        name: 'difference',
       },
       {
-        value: "hue",
-        name: "hue"
+        value: 'exclusion',
+        name: 'exclusion',
       },
       {
-        value: "saturation",
-        name: "saturation"
+        value: 'hue',
+        name: 'hue',
       },
       {
-        value: "color",
-        name: "color"
+        value: 'saturation',
+        name: 'saturation',
       },
-      { value: "luminosity", name: "luminosity" }
+      {
+        value: 'color',
+        name: 'color',
+      },
+      { value: 'luminosity', name: 'luminosity' },
       // "inherit",
       // "initial",
       // "revert",
       // "revert-layer",
       // "unset"
     ]
-
 
     return {
       timerId: null,
@@ -109,14 +106,14 @@ export default defineComponent({
         blend: blends[6].value,
         bright: 0.5,
         contrast: 2.0,
-        saturate: 3.5
+        saturate: 3.5,
       },
       overlay: {
         // exclusion
         blend: blends[11].value,
         bright: 0.8,
         contrast: 1.6,
-        saturate: 1.4
+        saturate: 1.4,
       },
 
       b0: {
@@ -126,7 +123,8 @@ export default defineComponent({
         posX: 50,
         posY: 50,
         angle: 0,
-      }, b1: {
+      },
+      b1: {
         zoomW: 200,
         zoomH: 700,
         // hue
@@ -134,21 +132,24 @@ export default defineComponent({
         posX: 50,
         posY: 50,
         angle: 0,
-      }, b2: {
+      },
+      b2: {
         zoom: 300,
         // hard-light
         blend: blends[8].value,
         posX: 50,
         posY: 50,
         angle: 0,
-      }, b3: {
+      },
+      b3: {
         zoom: 200,
         // exclusion
         blend: blends[11].value,
         posX: 50,
         posY: 50,
         angle: 0,
-      }, b20: {
+      },
+      b20: {
         // pos="50% 50%" zoom="50%"
         zoom: 50,
         // exclusion
@@ -156,7 +157,8 @@ export default defineComponent({
         posX: 50,
         posY: 50,
         angle: 0,
-      }, b21: {
+      },
+      b21: {
         // pos="0% 50%" zoom="200% 400%"
         zoomW: 200,
         zoomH: 400,
@@ -166,7 +168,8 @@ export default defineComponent({
         posX: 0,
         posY: 50,
         angle: 0,
-      }, b22: {
+      },
+      b22: {
         // pos="-50% -50%" zoom="200%"
         zoom: 200,
         // hard-light
@@ -174,7 +177,8 @@ export default defineComponent({
         posX: 50,
         posY: 0,
         angle: 0,
-      }, b23: {
+      },
+      b23: {
         // pos="50% 50%" zoom="200%"
         zoom: 200,
         // exclusion
@@ -186,8 +190,8 @@ export default defineComponent({
       animate: !false,
       animationVelocity: 0.015,
       showPhoto: true,
-      photo: "https://imgix.cosmicjs.com/9d2dbb80-45c4-11ed-8ad7-d16a9b880dcb-Einmusik-Mia.jpg",
-      noiseLayer: "/noise.webp",
+      photo: 'https://imgix.cosmicjs.com/9d2dbb80-45c4-11ed-8ad7-d16a9b880dcb-Einmusik-Mia.jpg',
+      noiseLayer: '/noise.webp',
       // noiseLayer: "/tool.jpg"
       showDebug: true,
       background: '#010902',
@@ -219,11 +223,11 @@ export default defineComponent({
         this.utime = Math.floor(performance.now() * this.animationVelocity)
       }
       // console.log(this.utime);
-      this.timerId = window.requestAnimationFrame(this.loop);
-    }
+      this.timerId = window.requestAnimationFrame(this.loop)
+    },
   },
   mounted() {
-    this.startTime();
+    this.startTime()
   },
   beforeDestroy() {
     window.cancelAnimationFrame(this.timerId)
@@ -232,29 +236,26 @@ export default defineComponent({
 </script>
 
 <template>
-  <div id="app" style="width: 100vw; height: 100vh;" :style="{ 'background-color': background }">
-
-    <!--  -->
-    <!-- https://www.joshdance.com/100/day50/images/varian.png -->
-    <!--  -->
-    <!-- -->
-    <!--  -->
+  <div id="app" style="width: 100vw; height: 100vh" :style="{ 'background-color': background }">
     <pre v-if="showDebug">{{ utime }}</pre>
+
     <section style="
-            aspect-ratio: 5/6;
-            display: grid;
-            grid-area: 1/1;
-            width: 40vw;
-            max-width: 25rem;
-            margin: auto;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            // border: /** debug */ 0.1rem solid;
-            // border-color: /** debug */ red;">
-
-
-      <img style="width: 100%; display: grid; grid-area: 1/1;" :src="photo" alt="" :style="boxShadowStyle"
-        v-show="showPhoto">
+        aspect-ratio: 5/6;
+        display: grid;
+        grid-area: 1/1;
+        width: 40vw;
+        max-width: 25rem;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        // border: /** debug */ 0.1rem solid;
+        // border-color: /** debug */ red;
+      ">
+      <img style="width: 100%; display: grid; grid-area: 1/1" :src="photo" alt="" :style="boxShadowStyle"
+        v-show="showPhoto" />
 
       <Composition :debug="showDebug" :blend="composition.blend" :bright="composition.bright"
         :contrast="composition.contrast" :saturate="composition.saturate">
@@ -266,7 +267,6 @@ export default defineComponent({
           bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)" />
         <Layer :blend="b3.blend" :zoom="b3.zoom + '%'" :pos="b3.posX + '% ' + b3.posY + '%'"
           bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)" />
-
       </Composition>
 
       <Overlay :blend="overlay.blend" :bright="overlay.bright" :contrast="overlay.contrast"
@@ -283,11 +283,8 @@ export default defineComponent({
       </Overlay>
     </section>
 
-
-
-    <dat-gui closed style="position: absolute; left: 50%;" closeText="Close controls" openText="Open controls"
+    <dat-gui closed style="position: absolute; left: 50%" closeText="Close controls" openText="Open controls"
       closePosition="bottom">
-
       <!-- todo: find a way to reduce duplication! -->
       <dat-folder label="Box shadow" closed>
         <dat-boolean v-model="showShadow" label="shadow?" />
@@ -378,12 +375,8 @@ export default defineComponent({
 
       <dat-color v-model="background" label="background" />
       <dat-number v-model="animationVelocity" :min="0" :max="0.9" :step="0.001" label="velocity" />
-
-
-
     </dat-gui>
   </div>
-
 </template>
 
 <style>
