@@ -135,43 +135,10 @@ export default {
     // children component <Overlay> as a sibling
     const childrenOverlay = isLastLayer ? [slots?.last] : []
 
-    const html = [
-      h(
-        'div',
-        {
-          class: 'composition',
-          style: `
-            display: grid;
-            grid-area: 1/1;
-            width: 100%;
-            // width: 60vw;
-            height: 100%
-            // max-width: 768px;
-            mix-blend-mode: ${props.blend};
-            background-image: ${buffers.join(',')};
-            background-size: ${bgSizes.join(",")};
-            background-blend-mode: ${blendModes};
-            background-position: ${bgPositions.join(",")};
-            filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
-            aspect-ratio: ${props.aspect};
-      `,
-        },
-        [
-          h('portal-target', { props: { name: 'overlay' } }, [])
-        ],
-
-        // children
-      ),
-      ...attachMainBuffers(),
-      ...createOverlayBuffers(),
-    ]
-    //transform: /** debug */ translateX(${props.posX});
-    if (props.debug) {
-      return html
-    }
-    return h(
+    const compositionHTML = h(
       'div',
       {
+        class: 'composition',
         style: `
             display: grid;
             grid-area: 1/1;
@@ -188,8 +155,24 @@ export default {
             aspect-ratio: ${props.aspect};
       `,
       },
-      [h('portal-target', { props: { name: 'overlay' } }, [])]
+      [
+        h('portal-target', { props: { name: 'overlay' } }, [])
+      ],
+
+      // children
     )
+    
+    const debugHTML = [
+      compositionHTML,
+      ...attachMainBuffers(),
+      ...createOverlayBuffers(),
+    ]
+
+    if (props.debug) {
+      return debugHTML
+    }
+
+    return compositionHTML
   },
   data() {
     return {}
