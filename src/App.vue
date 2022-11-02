@@ -325,7 +325,7 @@ export default defineComponent({
       </Overlay>
     </section>
 
-    <dat-gui closed style="position: absolute; left: 50%" closeText="Close controls" openText="Open controls"
+    <dat-gui closed style="position: absolute; left: 24%" closeText="Close controls" openText="Open controls"
       closePosition="bottom">
       <!-- todo: find a way to reduce duplication! -->
       <dat-folder label="Box shadow" closed>
