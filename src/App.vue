@@ -6,6 +6,8 @@ import Composition from './components/Composition.vue'
 import Overlay from './components/Overlay.vue'
 import { Portal, PortalTarget } from 'portal-vue'
 import DatGui from '@cyrilf/vue-dat-gui'
+import VanillaTilt from 'vanilla-tilt';
+
 Vue.use(DatGui)
 
 export default defineComponent({
@@ -193,7 +195,7 @@ export default defineComponent({
       photo: 'https://imgix.cosmicjs.com/9d2dbb80-45c4-11ed-8ad7-d16a9b880dcb-Einmusik-Mia.jpg',
       noiseLayer: '/noise.webp',
       // noiseLayer: "/tool.jpg"
-      showDebug: true,
+      showDebug: !true,
       background: '#010902',
       showShadow: false,
       boxShadow: {
@@ -203,6 +205,45 @@ export default defineComponent({
         spreadRadius: 2,
         color: '#399e48',
       },
+      transform: false
+    }
+  },
+  watch: {
+    // whenever transform changes, this function will run
+    transform(newVal, oldVal) {
+      if (newVal) {
+        const element = document.querySelector(".photo");
+        VanillaTilt.init(element, {
+          reverse: true,  // reverse the tilt direction
+          max: 35,     // max tilt rotation (degrees)
+          startX: 0,      // the starting tilt on the X axis, in degrees.
+          startY: 0,      // the starting tilt on the Y axis, in degrees.
+          perspective: 1000,   // Transform perspective, the lower the more extreme the tilt gets.
+          scale: 1,      // 2 = 200%, 1.5 = 150%, etc..
+          speed: 300,    // Speed of the enter/exit transition
+          transition: true,   // Set a transition on enter/exit.
+          axis: null,   // What axis should be enabled. Can be "x" or "y"
+          reset: true,   // If the tilt effect has to be reset on exit.
+          easing: "cubic-bezier(.03,.98,.52,.99)",    // Easing on enter/exit.
+          glare: true,  // if it should have a "glare" effect
+          "max-glare": 1,      // the maximum "glare" opacity (1 = 100%, 0.5 = 50%)
+          "glare-prerender": false,  // false = VanillaTilt creates the glare elements for you, otherwise
+          // you need to add .js-tilt-glare>.js-tilt-glare-inner by yourself
+          "mouse-event-element": '.composition',   // css-selector or link to HTML-element what will be listen mouse events
+          // "mouse-event-element":  null,   // css-selector or link to HTML-element what will be listen mouse events
+          gyroscope: !true,   // Boolean to enable/disable device orientation detection,
+          gyroscopeMinAngleX: -45,    // This is the bottom limit of the device angle on X axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the left border of the element;
+          gyroscopeMaxAngleX: 45,     // This is the top limit of the device angle on X axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the right border of the element;
+          gyroscopeMinAngleY: -45,    // This is the bottom limit of the device angle on Y axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the top border of the element;
+          gyroscopeMaxAngleY: 45,     // This is the top limit of the device angle on Y axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the bottom border of the element;
+        });
+        // element.addEventListener("tiltChange", callback);
+      } else {
+        const element = document.querySelector(".photo");
+        // Destroy instance
+        element?.vanillaTilt.destroy();
+
+      }
     }
   },
   computed: {
@@ -254,7 +295,8 @@ export default defineComponent({
         // border: /** debug */ 0.1rem solid;
         // border-color: /** debug */ red;
       ">
-      <img style="width: 100%; display: grid; grid-area: 1/1" :src="photo" alt="" :style="boxShadowStyle"
+      <img class="photo" data-tilt data-tilt-glare data-tilt-max-glare="0.8"
+        style="width: 100%; display: grid; grid-area: 1/1" :src="photo" alt="" :style="boxShadowStyle"
         v-show="showPhoto" />
 
       <Composition :debug="showDebug" :blend="composition.blend" :bright="composition.bright"
@@ -286,6 +328,16 @@ export default defineComponent({
     <dat-gui closed style="position: absolute; left: 50%" closeText="Close controls" openText="Open controls"
       closePosition="bottom">
       <!-- todo: find a way to reduce duplication! -->
+      <dat-boolean v-model="showPhoto" label="photo?" />
+      <dat-string v-model="photo" label="photo" />
+      <dat-string v-model="noiseLayer" label="noise layer" />
+      <dat-boolean v-model="showDebug" label="debug?" />
+      <dat-boolean v-model="animate" label="animate?" />
+      <dat-boolean v-model="transform" label="3d?" />
+
+      <dat-color v-model="background" label="background" />
+      <dat-number v-model="animationVelocity" :min="0" :max="0.9" :step="0.001" label="velocity" />
+
       <dat-folder label="Box shadow" closed>
         <dat-boolean v-model="showShadow" label="shadow?" />
         <dat-number v-model="boxShadow.offsetX" :min="-100" :max="100" :step="1" label="Offset X" />
@@ -366,15 +418,6 @@ export default defineComponent({
         <dat-number v-model="overlay.contrast" :min="0" :max="10" :step="0.01" label="contrast" />
         <dat-number v-model="overlay.saturate" :min="0" :max="10" :step="0.01" label="saturate" />
       </dat-folder>
-
-      <dat-boolean v-model="showPhoto" label="photo?" />
-      <dat-string v-model="photo" label="photo" />
-      <dat-string v-model="noiseLayer" label="noise layer" />
-      <dat-boolean v-model="showDebug" label="debug?" />
-      <dat-boolean v-model="animate" label="animate?" />
-
-      <dat-color v-model="background" label="background" />
-      <dat-number v-model="animationVelocity" :min="0" :max="0.9" :step="0.001" label="velocity" />
     </dat-gui>
   </div>
 </template>

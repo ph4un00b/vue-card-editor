@@ -139,6 +139,7 @@ export default {
       h(
         'div',
         {
+          class: 'composition',
           style: `
             display: grid;
             grid-area: 1/1;
