@@ -94,7 +94,7 @@ export default defineComponent({
       // background: '#cdeecc',
       // titleFontSize: 75,
       // title: 'vue-dat-gui',
-      showDebug: !true,
+
       blends,
       // pictureUrl: pictures[0].value,
       // boxShadow: {
@@ -185,7 +185,18 @@ export default defineComponent({
       },
       animate: !false,
       animationVelocity: 0.015,
-      photo: "https://imgix.cosmicjs.com/55c66c50-32b5-11ed-8a37-f1952c73e588-hernanmia.jpeg.jpg?w=240&auto=format"
+      photo: "https://imgix.cosmicjs.com/9d2dbb80-45c4-11ed-8ad7-d16a9b880dcb-Einmusik-Mia.jpg",
+      noiseLayer: "/noise.webp",
+      // noiseLayer: "/tool.jpg"
+      showDebug: true,
+      background: '#010902',
+      boxShadow: {
+        offsetX: 27,
+        offsetY: 27,
+        blurRadius: 75,
+        spreadRadius: 2,
+        color: 'rgba(3, 23, 6, 1)',
+      },
     }
   },
   computed: {},
@@ -211,7 +222,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div id="app">
+  <div id="app" style="width: 100vw; height: 100vh;" :style="{'background-color': background}">
 
     <!--  -->
     <!-- https://www.joshdance.com/100/day50/images/varian.png -->
@@ -238,7 +249,7 @@ export default defineComponent({
       <Composition :debug="showDebug" :blend="composition.blend" :bright="composition.bright"
         :contrast="composition.contrast" :saturate="composition.saturate">
         <Layer :blend="b0.blend" :zoom="b0.zoom + '%'" :pos="b0.posX + '% ' + b0.posY + '%'"
-          bg="url(src/assets/noise-layer.webp)" />
+          :bg="'url(' + noiseLayer +')'" />
         <Layer :blend="b1.blend" :zoom="b1.zoomW + '% ' + b1.zoomH + '%'" :pos="b1.posX + '% ' + b1.posY + '%'"
           bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))" />
         <Layer :blend="b2.blend" :zoom="b2.zoom + '%'" :pos="b2.posX + utime + '% ' + b2.posY + '%'"
@@ -251,7 +262,7 @@ export default defineComponent({
       <Overlay :blend="overlay.blend" :bright="overlay.bright" :contrast="overlay.contrast"
         :saturate="overlay.saturate">
         <Layer :blend="b20.blend" :pos="b20.posX + '% ' + b20.posY + '%'" :zoom="b20.zoom + '%'"
-          bg="url(src/assets/noise-layer.webp)" />
+        :bg="'url(' + noiseLayer +')'"  />
         <Layer :blend="b21.blend" :zoom="b21.zoomW + '% ' + b21.zoomH + '%'" :pos="b21.posX + '% ' + b21.posY + '%'"
           bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))" />
         <Layer blend="hard-light" :blend="b22.blend" :zoom="b22.zoom + '%'"
@@ -268,6 +279,8 @@ export default defineComponent({
       closePosition="bottom">
 
       <!-- todo: find a way to reduce duplication! -->
+      <dat-color v-model="background" label="Background"/>
+
       <dat-folder label="b0" closed>
         <dat-select v-model="b0.blend" :items="blends" label="Blend" />
         <dat-number v-model="b0.zoom" :min="0" :max="1000" :step="1" label="Zoom" />
@@ -343,6 +356,7 @@ export default defineComponent({
       <dat-boolean v-model="animate" label="animate?" />
       <dat-number v-model="animationVelocity" :min="0" :max="0.9" :step="0.001" label="velocity" />
       <dat-string v-model="photo" label="photo" />
+      <dat-string v-model="noiseLayer" label="noise layer" />
     </dat-gui>
   </div>
 
