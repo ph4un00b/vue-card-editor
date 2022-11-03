@@ -6,31 +6,31 @@ import Composition from './components/Composition.vue'
 import Overlay from './components/Overlay.vue'
 import { Portal, PortalTarget } from 'portal-vue'
 import DatGui from '@cyrilf/vue-dat-gui'
-import VanillaTilt from 'vanilla-tilt';
+import VanillaTilt from 'vanilla-tilt'
 
 Vue.use(DatGui)
 const tiltOptions = {
-  reverse: true,  // reverse the tilt direction
-  max: 35,     // max tilt rotation (degrees)
-  startX: 0,      // the starting tilt on the X axis, in degrees.
-  startY: 0,      // the starting tilt on the Y axis, in degrees.
-  perspective: 1000,   // Transform perspective, the lower the more extreme the tilt gets.
-  scale: 1,      // 2 = 200%, 1.5 = 150%, etc..
-  speed: 300,    // Speed of the enter/exit transition
-  transition: true,   // Set a transition on enter/exit.
-  axis: null,   // What axis should be enabled. Can be "x" or "y"
-  reset: true,   // If the tilt effect has to be reset on exit.
-  easing: "cubic-bezier(.03,.98,.52,.99)",    // Easing on enter/exit.
-  glare: false,  // if it should have a "glare" effect
-  "max-glare": 1,      // the maximum "glare" opacity (1 = 100%, 0.5 = 50%)
-  "glare-prerender": false,  // false = VanillaTilt creates the glare elements for you, otherwise
+  reverse: true, // reverse the tilt direction
+  max: 35, // max tilt rotation (degrees)
+  startX: 0, // the starting tilt on the X axis, in degrees.
+  startY: 0, // the starting tilt on the Y axis, in degrees.
+  perspective: 1000, // Transform perspective, the lower the more extreme the tilt gets.
+  scale: 1, // 2 = 200%, 1.5 = 150%, etc..
+  speed: 300, // Speed of the enter/exit transition
+  transition: true, // Set a transition on enter/exit.
+  axis: null, // What axis should be enabled. Can be "x" or "y"
+  reset: true, // If the tilt effect has to be reset on exit.
+  easing: 'cubic-bezier(.03,.98,.52,.99)', // Easing on enter/exit.
+  glare: false, // if it should have a "glare" effect
+  'max-glare': 1, // the maximum "glare" opacity (1 = 100%, 0.5 = 50%)
+  'glare-prerender': false, // false = VanillaTilt creates the glare elements for you, otherwise
   // you need to add .js-tilt-glare>.js-tilt-glare-inner by yourself
-  "mouse-event-element": '.composition',   // css-selector or link to HTML-element what will be listen mouse events
-  gyroscope: !true,   // Boolean to enable/disable device orientation detection,
-  gyroscopeMinAngleX: -45,    // This is the bottom limit of the device angle on X axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the left border of the element;
-  gyroscopeMaxAngleX: 45,     // This is the top limit of the device angle on X axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the right border of the element;
-  gyroscopeMinAngleY: -45,    // This is the bottom limit of the device angle on Y axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the top border of the element;
-  gyroscopeMaxAngleY: 45,     // This is the top limit of the device angle on Y axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the bottom border of the element;
+  'mouse-event-element': '.composition', // css-selector or link to HTML-element what will be listen mouse events
+  gyroscope: !true, // Boolean to enable/disable device orientation detection,
+  gyroscopeMinAngleX: -45, // This is the bottom limit of the device angle on X axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the left border of the element;
+  gyroscopeMaxAngleX: 45, // This is the top limit of the device angle on X axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the right border of the element;
+  gyroscopeMinAngleY: -45, // This is the bottom limit of the device angle on Y axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the top border of the element;
+  gyroscopeMaxAngleY: 45, // This is the top limit of the device angle on Y axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the bottom border of the element;
 }
 export default defineComponent({
   name: 'App',
@@ -227,10 +227,35 @@ export default defineComponent({
         spreadRadius: 2,
         color: '#399e48',
       },
-      transform: !true
+      content: {
+        display: !true,
+        text: 'Hola!',
+        left: 33,
+        top: 66,
+        color: '#fff',
+        size: 1,
+        w: 0,
+        h: 0,
+        extra: '',
+        debug: true
+      },
+      transform: !true,
     }
   },
   computed: {
+    textStyles() {
+      const { left, top, display, size, color, w, h, debug } = this.content
+      return {
+        left: left + '%',
+        top: top + '%',
+        color,
+        fontSize: size + "rem",
+        display: display ? 'block' : 'none',
+        width: w + '%',
+        height: h + '%',
+        'box-shadow': 'inset 0 0 4px ' + (debug ? 'red' : 'transparent')
+      }
+    },
     boxShadowStyle() {
       if (!this.showShadow) return
       const { offsetX, offsetY, blurRadius, spreadRadius, color } = this.boxShadow
@@ -261,15 +286,15 @@ export default defineComponent({
     // whenever question changes, this function will run
     transform(val, oldval) {
       if (val == false) {
-        const element = document.querySelector(".photo");
+        const element = document.querySelector('.photo')
         // Destroy instance
-        element?.vanillaTilt.destroy();
+        element?.vanillaTilt.destroy()
       } else {
-        const element = document.querySelector(".photo");
-        VanillaTilt.init(element, tiltOptions);
+        const element = document.querySelector('.photo')
+        VanillaTilt.init(element, tiltOptions)
         // element.addEventListener("tiltChange", callback);
       }
-    }
+    },
   },
   beforeDestroy() {
     window.cancelAnimationFrame(this.timerId)
@@ -280,6 +305,29 @@ export default defineComponent({
 <template>
   <div id="app" style="width: 100vw; height: 100vh" :style="{ 'background-color': background }">
     <pre v-if="showDebug">{{ utime }}</pre>
+
+    <dat-gui v-if="content.display" style="position: absolute; top: unset; bottom: 0; z-index: 20"
+      closeText="close jamon" openText="jamon" closePosition="bottom">
+      <!-- todo: find a way to reduce duplication! -->
+      <!-- <dat-folder label="Box shadow" closed> -->
+      <dat-boolean v-model="content.debug" label="debug?" />
+      <dat-string v-model="content.text" label="content" />
+      <!-- <dat-string v-model="content.extra" label="extra styles" /> -->
+      <dat-number v-model="content.size" :min="0" :max="10" :step=".1" label="size" />
+      <dat-number v-model="content.left" :min="-20" :max="100" :step="1" label="x" />
+      <dat-number v-model="content.top" :min="-20" :max="100" :step="1" label="y" />
+      <dat-color v-model="content.color" :min="-20" :max="100" :step="1" label="color" />
+      <dat-number v-model="content.w" :min="0" :max="100" :step="1" label="width" />
+      <dat-number v-model="content.h" :min="0" :max="100" :step="1" label="height" />
+      <!-- </dat-folder> -->
+    </dat-gui>
+
+    <!-- <pre>{{textStyles}}</pre> -->
+    <!-- todo find a simple way to inject extra styles from dat-gui -->
+    <span :style="textStyles"
+      style="width: 0%; height: 0%; z-index: 10; position: absolute; color: white; font-size: 2rem; font-weight: 900;">
+      {{ content.text }}
+    </span>
 
     <section style="
         aspect-ratio: 5/6;
@@ -325,18 +373,11 @@ export default defineComponent({
       </Overlay>
     </section>
 
-    <dat-gui closed style="position: absolute; left: 24%" closeText="Close controls" openText="Open controls"
-      closePosition="bottom">
+    <dat-gui closed style="position: absolute; left: 24%; z-index: 20" closeText="Close controls"
+      openText="Main controls" closePosition="bottom">
       <!-- todo: find a way to reduce duplication! -->
-      <dat-folder label="Box shadow" closed>
-        <dat-boolean v-model="showShadow" label="shadow?" />
-        <dat-number v-model="boxShadow.offsetX" :min="-100" :max="100" :step="1" label="Offset X" />
-        <dat-number v-model="boxShadow.offsetY" :min="-100" :max="100" :step="1" label="Offset Y" />
-        <dat-number v-model="boxShadow.blurRadius" :min="0" :max="100" :step="1" label="Blur radius" />
-        <dat-number v-model="boxShadow.spreadRadius" :min="0" :max="30" :step="1" label="Spread radius" />
-        <dat-color v-model="boxShadow.color" label="Color" />
-      </dat-folder>
 
+      <dat-boolean v-model="content.display" label="text?" />
       <dat-boolean v-model="showPhoto" label="photo?" />
       <dat-string v-model="photo" label="photo" />
       <dat-string v-model="noiseLayer" label="noise layer" />
@@ -345,6 +386,15 @@ export default defineComponent({
       <dat-boolean v-model="transform" label="3d?" />
       <dat-color v-model="background" label="background" />
       <dat-number v-model="animationVelocity" :min="0" :max="0.9" :step="0.001" label="velocity" />
+
+      <dat-folder label="Box shadow" closed>
+        <dat-boolean v-model="showShadow" label="shadow?" />
+        <dat-number v-model="boxShadow.offsetX" :min="-100" :max="100" :step="1" label="Offset X" />
+        <dat-number v-model="boxShadow.offsetY" :min="-100" :max="100" :step="1" label="Offset Y" />
+        <dat-number v-model="boxShadow.blurRadius" :min="0" :max="100" :step="1" label="Blur radius" />
+        <dat-number v-model="boxShadow.spreadRadius" :min="0" :max="30" :step="1" label="Spread radius" />
+        <dat-color v-model="boxShadow.color" label="Color" />
+      </dat-folder>
 
       <dat-folder label="b0" closed>
         <dat-select v-model="b0.blend" :items="blends" label="Blend" />
