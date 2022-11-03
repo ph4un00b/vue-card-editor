@@ -234,6 +234,7 @@ export default defineComponent({
         top: 66,
         color: '#fff',
         size: 1,
+        weight: 100,
         w: 0,
         h: 0,
         extra: '',
@@ -244,12 +245,13 @@ export default defineComponent({
   },
   computed: {
     textStyles() {
-      const { left, top, display, size, color, w, h, debug } = this.content
+      const { left, top, display, size, color, w, h, debug, weight } = this.content
       return {
         left: left + '%',
         top: top + '%',
         color,
         fontSize: size + "rem",
+        fontWeight: weight,
         display: display ? 'block' : 'none',
         width: w + '%',
         height: h + '%',
@@ -314,6 +316,7 @@ export default defineComponent({
       <dat-string v-model="content.text" label="content" />
       <!-- <dat-string v-model="content.extra" label="extra styles" /> -->
       <dat-number v-model="content.size" :min="0" :max="10" :step=".1" label="size" />
+      <dat-number v-model="content.weight" :min="100" :max="900" :step="100" label="weight" />
       <dat-number v-model="content.left" :min="-20" :max="100" :step="1" label="x" />
       <dat-number v-model="content.top" :min="-20" :max="100" :step="1" label="y" />
       <dat-color v-model="content.color" :min="-20" :max="100" :step="1" label="color" />
@@ -324,8 +327,7 @@ export default defineComponent({
 
     <!-- <pre>{{textStyles}}</pre> -->
     <!-- todo find a simple way to inject extra styles from dat-gui -->
-    <span :style="textStyles"
-      style="width: 0%; height: 0%; z-index: 10; position: absolute; color: white; font-size: 2rem; font-weight: 900;">
+    <span :style="textStyles" style="width: 0%; height: 0%; z-index: 10; position: absolute;">
       {{ content.text }}
     </span>
 
