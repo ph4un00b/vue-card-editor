@@ -21,11 +21,11 @@ const tiltOptions = {
   axis: null, // What axis should be enabled. Can be "x" or "y"
   reset: true, // If the tilt effect has to be reset on exit.
   easing: 'cubic-bezier(.03,.98,.52,.99)', // Easing on enter/exit.
-  glare: false, // if it should have a "glare" effect
+  // glare: false, // if it should have a "glare" effect
   'max-glare': 1, // the maximum "glare" opacity (1 = 100%, 0.5 = 50%)
   'glare-prerender': false, // false = VanillaTilt creates the glare elements for you, otherwise
   // you need to add .js-tilt-glare>.js-tilt-glare-inner by yourself
-  'mouse-event-element': '.composition', // css-selector or link to HTML-element what will be listen mouse events
+  'mouse-event-element': '', // css-selector or link to HTML-element what will be listen mouse events
   gyroscope: !true, // Boolean to enable/disable device orientation detection,
   gyroscopeMinAngleX: -45, // This is the bottom limit of the device angle on X axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the left border of the element;
   gyroscopeMaxAngleX: 45, // This is the top limit of the device angle on X axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the right border of the element;
@@ -285,7 +285,6 @@ export default defineComponent({
     // element.addEventListener("tiltChange", callback);
   },
   watch: {
-    // whenever question changes, this function will run
     transform(val, oldval) {
       if (val == false) {
         const element = document.querySelector('.photo')
@@ -326,12 +325,10 @@ export default defineComponent({
     </dat-gui>
 
     <!-- <pre>{{textStyles}}</pre> -->
-    <!-- todo find a simple way to inject extra styles from dat-gui -->
-    <span :style="textStyles" style="width: 0%; height: 0%; z-index: 10; position: absolute;">
-      {{ content.text }}
-    </span>
 
-    <section style="
+
+    <section data-tilt data-tilt-full-page-listening class="photo" style="
+    transform-style: preserve-3d; transform: perspective(1000px);
         aspect-ratio: 5/6;
         display: grid;
         grid-area: 1/1;
@@ -346,7 +343,13 @@ export default defineComponent({
         // border: /** debug */ 0.1rem solid;
         // border-color: /** debug */ red;
       ">
-      <img class="photo" style="width: 100%; display: grid; grid-area: 1/1" :src="photo" alt="" :style="boxShadowStyle"
+
+      <!-- todo find a simple way to inject extra styles from dat-gui -->
+      <span :style="textStyles" style="width: 0%; height: 0%; z-index: 10; position: absolute;">
+        {{ content.text }}
+      </span>
+
+      <img style="width: 100%; display: grid; grid-area: 1/1" :src="photo" alt="" :style="boxShadowStyle"
         v-show="showPhoto" />
 
       <Composition :debug="showDebug" :blend="composition.blend" :bright="composition.bright"
@@ -373,19 +376,21 @@ export default defineComponent({
         <Layer blend="exclusion" :blend="b23.blend" :zoom="b23.zoom + '%'" :pos="b23.posX + '% ' + b23.posY + '%'"
           bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)" />
       </Overlay>
+
+      <!-- <section class="handler" style="color:aliceblue; background-color: rosybrown; width: 100%; height: 20rem; margin-top: 3rem;"> 3d handler </section> -->
     </section>
 
     <dat-gui closed style="position: absolute; left: 24%; z-index: 20" closeText="Close controls"
       openText="Main controls" closePosition="bottom">
       <!-- todo: find a way to reduce duplication! -->
 
-      <dat-boolean v-model="content.display" label="text?" />
       <dat-boolean v-model="showPhoto" label="photo?" />
       <dat-string v-model="photo" label="photo" />
       <dat-string v-model="noiseLayer" label="noise layer" />
       <dat-boolean v-model="showDebug" label="debug?" />
       <dat-boolean v-model="animate" label="animate?" />
       <dat-boolean v-model="transform" label="3d?" />
+      <dat-boolean v-model="content.display" label="text?" />
       <dat-color v-model="background" label="background" />
       <dat-number v-model="animationVelocity" :min="0" :max="0.9" :step="0.001" label="velocity" />
 
