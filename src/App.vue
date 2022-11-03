@@ -309,7 +309,7 @@ export default defineComponent({
     <pre v-if="showDebug">{{ utime }}</pre>
 
     <dat-gui v-if="content.display" style="position: absolute; top: unset; bottom: 0; z-index: 20"
-      closeText="close text" openText="open text" closePosition="bottom">
+      closeText="close text" openText="open text" closePosition="top">
       <!-- todo: find a way to reduce duplication! -->
       <!-- <dat-folder label="Box shadow" closed> -->
       <dat-boolean v-model="content.debug" label="debug?" />
