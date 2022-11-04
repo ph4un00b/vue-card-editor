@@ -15,8 +15,10 @@
   "dependencies": {
     "@cyrilf/vue-dat-gui": "^0.3.0",
     "glsl-canvas-js": "^0.2.9",
+    "localforage": "^1.10.0",
     "portal-vue": "^2.1.7",
     "vanilla-tilt": "^1.7.3",
+    "vlf": "^1.1.0",
     "vue": "^2"
   }
 }

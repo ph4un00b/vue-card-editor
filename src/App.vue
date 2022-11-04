@@ -12,6 +12,10 @@ import { Canvas } from 'glsl-canvas-js'
 import kaleido from './frags/kaleido'
 import pastel from './frags/pastel'
 
+import Vlf from 'vlf'
+import localforage from 'localforage'
+Vue.use(Vlf, localforage)
+
 Vue.use(DatGui)
 const tiltOptions = {
   reverse: true, // reverse the tilt direction
@@ -116,19 +120,9 @@ export default defineComponent({
       timerId: null,
       start: performance.now(),
       utime: 0,
-      // background: '#cdeecc',
-      // titleFontSize: 75,
-      // title: 'vue-dat-gui',
-
+      canvas: null,
+      frags: [pastel, kaleido],
       blends,
-      // pictureUrl: pictures[0].value,
-      // boxShadow: {
-      //   offsetX: 27,
-      //   offsetY: 27,
-      //   blurRadius: 75,
-      //   spreadRadius: 2,
-      //   color: 'rgba(3, 23, 6, 1)',
-      // },
       composition: {
         // color-dodge
         blend: blends[6].value,
@@ -222,7 +216,7 @@ export default defineComponent({
       noiseLayer: '/noise.webp',
       // noiseLayer: "/tool.jpg"
       showDebug: !true,
-      background: '#010902',
+      background: '#171717',
       showShadow: false,
       boxShadow: {
         offsetX: 27,
@@ -246,8 +240,6 @@ export default defineComponent({
       },
       transform: !true,
       effects: false,
-      canvas: null,
-      frags: [pastel, kaleido],
       frag: {
         textures: [
           { name: 'none', value: '' },
@@ -287,6 +279,20 @@ export default defineComponent({
     },
   },
   methods: {
+    save() {
+      // console.log(JSON.stringify(this.$data))
+      const preset = { ...this.$data }
+      delete preset.timerId
+      delete preset.start
+      delete preset.utime
+      delete preset.canvas
+      delete preset.frags
+      delete preset.blends
+
+      this.$vlf.setItem('preset', preset).then(v => {
+        console.log(v);
+      });
+    },
     startTime() {
       this.loop()
     },
@@ -298,8 +304,20 @@ export default defineComponent({
       this.timerId = window.requestAnimationFrame(this.loop)
     },
   },
+  beforeCreate() {
+    this.$vlf.createInstance({
+      storeName: 'jamon'
+    })
+  },
   mounted() {
+    this.$vlf.getItem('preset').then(v => {
+      Object.assign(this.$data, v)
+      // console.log(v)
+    });
+
     this.startTime()
+
+    if (!this.effects) return
     /** @link https://css-tricks.com/the-trick-to-viewport-units-on-mobile/ */
     // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
     let vh = window.innerHeight * 0.01
@@ -326,8 +344,10 @@ export default defineComponent({
       antialias: !true,
       mode: 'flat',
       extensions: ['EXT_shader_texture_lod'],
+      // backgroundColor: 'blue'
     }
     this.canvas = new Canvas(canvas, options)
+    // canvas.style.backgroundColor = 'red'
 
     this.canvas.setUniform('u_center', this.frag.center.x, this.frag.center.y)
 
@@ -375,7 +395,7 @@ export default defineComponent({
       min-height: -webkit-fill-available;
     " :style="{ 'background-color': background, overflow: 'hidden' }">
     <!-- todo: fix bug on textures for mobile (ios 2019 at least!) -->
-    <canvas :data-textures="frag.texture"></canvas>
+    <canvas v-if="effects" :data-textures="frag.texture"></canvas>
     <!-- <canvas class="glsl-canvas" :data-fragment="frags[1]" data-textures="tool.jpg"></canvas> -->
     <!-- <canvas data-textures="tool.jpg" class="glslCanvas"
       :data-fragment="frags[1]"></canvas> -->
@@ -390,8 +410,8 @@ export default defineComponent({
       <!-- </dat-folder> -->
     </dat-gui>
 
-    <dat-gui v-if="content.display" style="position: absolute; top: unset; bottom: 0; z-index: 20"
-      closeText="close fx" openText="open fx" closePosition="top">
+    <dat-gui v-if="content.display" style="position: absolute; top: unset; bottom: 0; z-index: 20" closeText="close fx"
+      openText="open fx" closePosition="top">
       <!-- todo: find a way to reduce duplication! -->
       <!-- <dat-folder label="Box shadow" closed> -->
       <dat-boolean v-model="content.debug" label="debug?" />
@@ -465,6 +485,7 @@ export default defineComponent({
       openText="Main controls" closePosition="bottom">
       <!-- todo: find a way to reduce duplication! -->
 
+      <dat-button @click="save" label="save preset" />
       <dat-boolean v-model="showPhoto" label="photo?" />
       <dat-string v-model="photo" label="photo" />
       <dat-string v-model="noiseLayer" label="noise layer" />
