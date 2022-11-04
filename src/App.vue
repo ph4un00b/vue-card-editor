@@ -108,6 +108,7 @@ const blends = [
 ]
 
 const defaultPreset = {
+  version: '20221104',
   composition: {
     // color-dodge
     blend: blends[6].value,
@@ -226,6 +227,7 @@ const defaultPreset = {
   transform: !true,
   effects: false,
   frag: {
+    velocity: 0.25,
     textures: [
       { name: 'none', value: '' },
       { name: 'copyof', value: 'copyof.jpg' },
@@ -257,7 +259,7 @@ export default defineComponent({
       canvas: null,
       frags: [pastel, kaleido],
       blends,
-      ...defaultPreset
+      ...defaultPreset,
     }
   },
   computed: {
@@ -391,7 +393,9 @@ export default defineComponent({
       this.canvas = new Canvas(canvas, options)
       // canvas.style.backgroundColor = 'red'
 
+      console.log(this.frag.velocity)
       this.canvas.setUniform('u_center', this.frag.center.x, this.frag.center.y)
+      this.canvas.setUniform('u_velocity', this.frag.velocity)
     },
   },
   beforeCreate() {
@@ -415,6 +419,9 @@ export default defineComponent({
     // element.addEventListener("tiltChange", callback);
   },
   watch: {
+    'frag.velocity': function (n) {
+      this.canvas?.setUniform('u_velocity', n)
+    },
     'frag.texture': function (n) {
       this.canvas?.setUniform('u_tex0', n)
     },
@@ -475,6 +482,7 @@ export default defineComponent({
       <dat-select v-model="frag.texture" :items="frag.textures" label="image" />
       <dat-number v-model="frag.center.x" :min="-1" :max="1" :step="0.01" label="x" />
       <dat-number v-model="frag.center.y" :min="-1" :max="1" :step="0.01" label="y" />
+      <dat-number v-model="frag.velocity" :min="-1" :max="1" :step="0.01" label="velocity" />
       <!-- </dat-folder> -->
     </dat-gui>
 

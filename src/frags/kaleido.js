@@ -132,6 +132,7 @@ vec4 or(vec4 a, vec4 b) {
 
 uniform sampler2D u_tex0;
 uniform vec2 u_center;
+uniform float u_velocity;
 
 void main(void){
     vec4 color=vec4(0.,0.,0.,1.);
@@ -148,8 +149,6 @@ void main(void){
     // otro effcto con floor
     float angle = (atan(st.y, st.x));
     
-    // radius = 0.832; // all lines go to the center
-    // angle *= 4.464;
     float segmentos = 17.;
     
     angle /= PI * 2.; // normalizing by removing PI * 2 
@@ -180,7 +179,7 @@ void main(void){
     // 1.c mix modee
     // angle = mix(forward, backward, isEven);
     
-    angle += u_time; // rotate
+    angle += u_time * u_velocity; // rotate
     
     // reajuste
     angle /= segmentos;
