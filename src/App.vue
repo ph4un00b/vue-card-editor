@@ -289,9 +289,9 @@ export default defineComponent({
       delete preset.frags
       delete preset.blends
 
-      this.$vlf.setItem('preset', preset).then(v => {
-        console.log(v);
-      });
+      this.$vlf.setItem('preset', preset).then((v) => {
+        console.log(v)
+      })
     },
     startTime() {
       this.loop()
@@ -303,53 +303,57 @@ export default defineComponent({
       // console.log(this.utime);
       this.timerId = window.requestAnimationFrame(this.loop)
     },
+    createCanvas() {
+      /** @link https://css-tricks.com/the-trick-to-viewport-units-on-mobile/ */
+      // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+      let vh = window.innerHeight * 0.01
+      // Then we set the value in the --vh custom property to the root of the document
+      document.documentElement.style.setProperty('--vh', `${vh}px`)
+      // alert(vh)
+      const canvas = document.querySelector('canvas')
+      console.log(canvas)
+      const w = window.innerWidth
+      const h = vh * 100
+      // const dpi = window.devicePixelRatio
+      const dpi = 1
+      const size = Math.max(h, w) * 1
+      // alert(size)
+      canvas.width = size * dpi
+      canvas.height = size * dpi
+      // alert(canvas.height)
+      canvas.style.width = size + 'px'
+      canvas.style.height = size + 'px'
+      // todo: resize!
+      const options = {
+        // vertexString: `...`,
+        fragmentString: this.frags[1],
+        alpha: false,
+        antialias: !true,
+        mode: 'flat',
+        extensions: ['EXT_shader_texture_lod'],
+        // backgroundColor: 'blue'
+      }
+      this.canvas = new Canvas(canvas, options)
+      // canvas.style.backgroundColor = 'red'
+
+      this.canvas.setUniform('u_center', this.frag.center.x, this.frag.center.y)
+    },
   },
   beforeCreate() {
     this.$vlf.createInstance({
-      storeName: 'jamon'
+      storeName: 'jamon',
     })
   },
   mounted() {
-    this.$vlf.getItem('preset').then(v => {
+    this.$vlf.getItem('preset').then((v) => {
       Object.assign(this.$data, v)
       // console.log(v)
-    });
+    })
 
     this.startTime()
 
     if (!this.effects) return
-    /** @link https://css-tricks.com/the-trick-to-viewport-units-on-mobile/ */
-    // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-    let vh = window.innerHeight * 0.01
-    // Then we set the value in the --vh custom property to the root of the document
-    document.documentElement.style.setProperty('--vh', `${vh}px`)
-    // alert(vh)
-    const canvas = document.querySelector('canvas')
-    const w = window.innerWidth
-    const h = vh * 100
-    // const dpi = window.devicePixelRatio
-    const dpi = 1
-    const size = Math.max(h, w) * 1
-    // alert(size)
-    canvas.width = size * dpi
-    canvas.height = size * dpi
-    // alert(canvas.height)
-    canvas.style.width = size + 'px'
-    canvas.style.height = size + 'px'
-    // todo: resize!
-    const options = {
-      // vertexString: `...`,
-      fragmentString: this.frags[1],
-      alpha: false,
-      antialias: !true,
-      mode: 'flat',
-      extensions: ['EXT_shader_texture_lod'],
-      // backgroundColor: 'blue'
-    }
-    this.canvas = new Canvas(canvas, options)
-    // canvas.style.backgroundColor = 'red'
-
-    this.canvas.setUniform('u_center', this.frag.center.x, this.frag.center.y)
+    this.createCanvas()
 
     // const element = document.querySelector(".photo");
     // VanillaTilt.init(element, tiltOptions);
@@ -358,7 +362,7 @@ export default defineComponent({
   watch: {
     'frag.texture': function (n) {
       // alert(n)
-      this.canvas.setUniform('u_tex0', n);
+      this.canvas.setUniform('u_tex0', n)
     },
     'frag.center.x': function (newVal, oldVal) {
       this.canvas.setUniform('u_center', newVal, this.frag.center.y)
@@ -375,6 +379,14 @@ export default defineComponent({
         const element = document.querySelector('.photo')
         VanillaTilt.init(element, tiltOptions)
         // element.addEventListener("tiltChange", callback);
+      }
+    },
+    effects(val, oldval) {
+      if (val == false) {
+        this.canvas.destroy()
+        this.canvas = null
+      } else {
+        this.$nextTick(this.createCanvas)
       }
     },
   },
@@ -395,10 +407,12 @@ export default defineComponent({
       min-height: -webkit-fill-available;
     " :style="{ 'background-color': background, overflow: 'hidden' }">
     <!-- todo: fix bug on textures for mobile (ios 2019 at least!) -->
+
     <canvas v-if="effects" :data-textures="frag.texture"></canvas>
     <!-- <canvas class="glsl-canvas" :data-fragment="frags[1]" data-textures="tool.jpg"></canvas> -->
     <!-- <canvas data-textures="tool.jpg" class="glslCanvas"
       :data-fragment="frags[1]"></canvas> -->
+      
     <pre v-if="showDebug">{{ utime }}</pre>
 
     <dat-gui v-if="effects" style="position: absolute; top: unset; bottom: 0; left: 0; z-index: 20"
