@@ -40,6 +40,206 @@ const tiltOptions = {
   gyroscopeMinAngleY: -45, // This is the bottom limit of the device angle on Y axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the top border of the element;
   gyroscopeMaxAngleY: 45, // This is the top limit of the device angle on Y axis, meaning that a device rotated at this angle would tilt the element as if the mouse was on the bottom border of the element;
 }
+
+const blends = [
+  {
+    value: 'normal',
+    name: 'normal',
+  },
+  {
+    value: 'multiply',
+    name: 'multiply',
+  },
+  {
+    value: 'screen',
+    name: 'screen',
+  },
+  {
+    value: 'overlay',
+    name: 'overlay',
+  },
+  {
+    value: 'darken',
+    name: 'darken',
+  },
+  {
+    value: 'lighten',
+    name: 'lighten',
+  },
+  { value: 'color-dodge', name: 'color-dodge' },
+  {
+    value: 'color-burn',
+    name: 'color-burn',
+  },
+  {
+    value: 'hard-light',
+    name: 'hard-light',
+  },
+  {
+    value: 'soft-light',
+    name: 'soft-light',
+  },
+  {
+    value: 'difference',
+    name: 'difference',
+  },
+  {
+    value: 'exclusion',
+    name: 'exclusion',
+  },
+  {
+    value: 'hue',
+    name: 'hue',
+  },
+  {
+    value: 'saturation',
+    name: 'saturation',
+  },
+  {
+    value: 'color',
+    name: 'color',
+  },
+  { value: 'luminosity', name: 'luminosity' },
+  // "inherit",
+  // "initial",
+  // "revert",
+  // "revert-layer",
+  // "unset"
+]
+
+const defaultPreset = {
+  composition: {
+    // color-dodge
+    blend: blends[6].value,
+    bright: 0.5,
+    contrast: 2.0,
+    saturate: 3.5,
+  },
+  overlay: {
+    // exclusion
+    blend: blends[11].value,
+    bright: 0.8,
+    contrast: 1.6,
+    saturate: 1.4,
+  },
+
+  b0: {
+    zoom: 50,
+    // exclusion
+    blend: blends[11].value,
+    posX: 50,
+    posY: 50,
+    angle: 0,
+  },
+  b1: {
+    zoomW: 200,
+    zoomH: 700,
+    // hue
+    blend: blends[12].value,
+    posX: 50,
+    posY: 50,
+    angle: 0,
+  },
+  b2: {
+    zoom: 300,
+    // hard-light
+    blend: blends[8].value,
+    posX: 50,
+    posY: 50,
+    angle: 0,
+  },
+  b3: {
+    zoom: 200,
+    // exclusion
+    blend: blends[11].value,
+    posX: 50,
+    posY: 50,
+    angle: 0,
+  },
+  b20: {
+    // pos="50% 50%" zoom="50%"
+    zoom: 50,
+    // exclusion
+    blend: blends[11].value,
+    posX: 50,
+    posY: 50,
+    angle: 0,
+  },
+  b21: {
+    // pos="0% 50%" zoom="200% 400%"
+    zoomW: 200,
+    zoomH: 400,
+    // hue
+    blend: blends[12].value,
+
+    posX: 0,
+    posY: 50,
+    angle: 0,
+  },
+  b22: {
+    // pos="-50% -50%" zoom="200%"
+    zoom: 200,
+    // hard-light
+    blend: blends[8].value,
+    posX: 50,
+    posY: 0,
+    angle: 0,
+  },
+  b23: {
+    // pos="50% 50%" zoom="200%"
+    zoom: 200,
+    // exclusion
+    blend: blends[11].value,
+    posX: 50,
+    posY: 50,
+    angle: 0,
+  },
+  animate: !false,
+  animationVelocity: 0.015,
+  showPhoto: true,
+  photo: 'https://imgix.cosmicjs.com/9d2dbb80-45c4-11ed-8ad7-d16a9b880dcb-Einmusik-Mia.jpg',
+  noiseLayer: '/noise.webp',
+  // noiseLayer: "/tool.jpg"
+  showDebug: !true,
+  background: '#171717',
+  showShadow: false,
+  boxShadow: {
+    offsetX: 27,
+    offsetY: 27,
+    blurRadius: 75,
+    spreadRadius: 2,
+    color: '#399e48',
+  },
+  content: {
+    display: !true,
+    text: 'Hola!',
+    left: 33,
+    top: 66,
+    color: '#fff',
+    size: 1,
+    weight: 100,
+    w: 0,
+    h: 0,
+    extra: '',
+    debug: true,
+  },
+  transform: !true,
+  effects: false,
+  frag: {
+    textures: [
+      { name: 'none', value: '' },
+      { name: 'copyof', value: 'copyof.jpg' },
+      { name: 'spiral', value: 'spiral.jpg' },
+      { name: 'tool', value: 'tool.jpg' },
+    ],
+    texture: '',
+    center: {
+      x: 0.5,
+      y: -1.0,
+    },
+  },
+}
+
 export default defineComponent({
   name: 'App',
   components: {
@@ -50,72 +250,6 @@ export default defineComponent({
     Overlay,
   },
   data() {
-    const blends = [
-      {
-        value: 'normal',
-        name: 'normal',
-      },
-      {
-        value: 'multiply',
-        name: 'multiply',
-      },
-      {
-        value: 'screen',
-        name: 'screen',
-      },
-      {
-        value: 'overlay',
-        name: 'overlay',
-      },
-      {
-        value: 'darken',
-        name: 'darken',
-      },
-      {
-        value: 'lighten',
-        name: 'lighten',
-      },
-      { value: 'color-dodge', name: 'color-dodge' },
-      {
-        value: 'color-burn',
-        name: 'color-burn',
-      },
-      {
-        value: 'hard-light',
-        name: 'hard-light',
-      },
-      {
-        value: 'soft-light',
-        name: 'soft-light',
-      },
-      {
-        value: 'difference',
-        name: 'difference',
-      },
-      {
-        value: 'exclusion',
-        name: 'exclusion',
-      },
-      {
-        value: 'hue',
-        name: 'hue',
-      },
-      {
-        value: 'saturation',
-        name: 'saturation',
-      },
-      {
-        value: 'color',
-        name: 'color',
-      },
-      { value: 'luminosity', name: 'luminosity' },
-      // "inherit",
-      // "initial",
-      // "revert",
-      // "revert-layer",
-      // "unset"
-    ]
-
     return {
       timerId: null,
       start: performance.now(),
@@ -123,136 +257,7 @@ export default defineComponent({
       canvas: null,
       frags: [pastel, kaleido],
       blends,
-      composition: {
-        // color-dodge
-        blend: blends[6].value,
-        bright: 0.5,
-        contrast: 2.0,
-        saturate: 3.5,
-      },
-      overlay: {
-        // exclusion
-        blend: blends[11].value,
-        bright: 0.8,
-        contrast: 1.6,
-        saturate: 1.4,
-      },
-
-      b0: {
-        zoom: 50,
-        // exclusion
-        blend: blends[11].value,
-        posX: 50,
-        posY: 50,
-        angle: 0,
-      },
-      b1: {
-        zoomW: 200,
-        zoomH: 700,
-        // hue
-        blend: blends[12].value,
-        posX: 50,
-        posY: 50,
-        angle: 0,
-      },
-      b2: {
-        zoom: 300,
-        // hard-light
-        blend: blends[8].value,
-        posX: 50,
-        posY: 50,
-        angle: 0,
-      },
-      b3: {
-        zoom: 200,
-        // exclusion
-        blend: blends[11].value,
-        posX: 50,
-        posY: 50,
-        angle: 0,
-      },
-      b20: {
-        // pos="50% 50%" zoom="50%"
-        zoom: 50,
-        // exclusion
-        blend: blends[11].value,
-        posX: 50,
-        posY: 50,
-        angle: 0,
-      },
-      b21: {
-        // pos="0% 50%" zoom="200% 400%"
-        zoomW: 200,
-        zoomH: 400,
-        // hue
-        blend: blends[12].value,
-
-        posX: 0,
-        posY: 50,
-        angle: 0,
-      },
-      b22: {
-        // pos="-50% -50%" zoom="200%"
-        zoom: 200,
-        // hard-light
-        blend: blends[8].value,
-        posX: 50,
-        posY: 0,
-        angle: 0,
-      },
-      b23: {
-        // pos="50% 50%" zoom="200%"
-        zoom: 200,
-        // exclusion
-        blend: blends[11].value,
-        posX: 50,
-        posY: 50,
-        angle: 0,
-      },
-      animate: !false,
-      animationVelocity: 0.015,
-      showPhoto: true,
-      photo: 'https://imgix.cosmicjs.com/9d2dbb80-45c4-11ed-8ad7-d16a9b880dcb-Einmusik-Mia.jpg',
-      noiseLayer: '/noise.webp',
-      // noiseLayer: "/tool.jpg"
-      showDebug: !true,
-      background: '#171717',
-      showShadow: false,
-      boxShadow: {
-        offsetX: 27,
-        offsetY: 27,
-        blurRadius: 75,
-        spreadRadius: 2,
-        color: '#399e48',
-      },
-      content: {
-        display: !true,
-        text: 'Hola!',
-        left: 33,
-        top: 66,
-        color: '#fff',
-        size: 1,
-        weight: 100,
-        w: 0,
-        h: 0,
-        extra: '',
-        debug: true,
-      },
-      transform: !true,
-      effects: false,
-      frag: {
-        textures: [
-          { name: 'none', value: '' },
-          { name: 'copyof', value: 'copyof.jpg' },
-          { name: 'spiral', value: 'spiral.jpg' },
-          { name: 'tool', value: 'tool.jpg' },
-        ],
-        texture: '',
-        center: {
-          x: 0.5,
-          y: -1.0,
-        },
-      },
+      ...defaultPreset
     }
   },
   computed: {
@@ -279,6 +284,53 @@ export default defineComponent({
     },
   },
   methods: {
+    reset() {
+      this.$vlf.setItem('preset', defaultPreset).then((v) => {
+        Object.assign(this.$data, v)
+      })
+    },
+    load() {
+      var preset = prompt('give me the json!')
+      try {
+        console.log(JSON.parse(preset))
+        preset = JSON.parse(preset)
+      } catch (e) {
+        alert('bad JSON!, try again')
+      }
+
+      this.$vlf.setItem('preset', preset).then((v) => {
+        console.log('PRESET_SAVED!')
+        Object.assign(this.$data, v)
+      })
+    },
+    download(json) {
+      const fileType = {
+        PNG: 'image/png',
+        JPEG: 'image/jpeg',
+        PDF: 'application/pdf',
+        JSON: 'application/json',
+      }
+
+      function json2URL(data, mimeType) {
+        return URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: mimeType }))
+      }
+
+      const saveAs = (uri, filename) => {
+        const link = document.createElement('a')
+        // if (typeof link.download === 'string') {
+        link.href = uri
+        link.download = filename
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        // } else {
+        //   window.open(uri)
+        // }
+      }
+
+      const url = json2URL(json, fileType.JSON)
+      saveAs(url, 'preset.json')
+    },
     save() {
       // console.log(JSON.stringify(this.$data))
       const preset = { ...this.$data }
@@ -290,7 +342,10 @@ export default defineComponent({
       delete preset.blends
 
       this.$vlf.setItem('preset', preset).then((v) => {
-        console.log(v)
+        // console.log(v)
+        console.log('PRESET_SAVED!')
+        this.download(v)
+        // alert('preset saved 💃')
       })
     },
     startTime() {
@@ -361,14 +416,13 @@ export default defineComponent({
   },
   watch: {
     'frag.texture': function (n) {
-      // alert(n)
-      this.canvas.setUniform('u_tex0', n)
+      this.canvas?.setUniform('u_tex0', n)
     },
     'frag.center.x': function (newVal, oldVal) {
-      this.canvas.setUniform('u_center', newVal, this.frag.center.y)
+      this.canvas?.setUniform('u_center', newVal, this.frag.center.y)
     },
     'frag.center.y': function (newVal, oldVal) {
-      this.canvas.setUniform('u_center', this.frag.center.x, newVal)
+      this.canvas?.setUniform('u_center', this.frag.center.x, newVal)
     },
     transform(val, oldval) {
       if (val == false) {
@@ -412,7 +466,7 @@ export default defineComponent({
     <!-- <canvas class="glsl-canvas" :data-fragment="frags[1]" data-textures="tool.jpg"></canvas> -->
     <!-- <canvas data-textures="tool.jpg" class="glslCanvas"
       :data-fragment="frags[1]"></canvas> -->
-      
+
     <pre v-if="showDebug">{{ utime }}</pre>
 
     <dat-gui v-if="effects" style="position: absolute; top: unset; bottom: 0; left: 0; z-index: 20"
@@ -500,6 +554,8 @@ export default defineComponent({
       <!-- todo: find a way to reduce duplication! -->
 
       <dat-button @click="save" label="save preset" />
+      <dat-button @click="load" label="load preset" />
+      <dat-button @click="reset" label="reset project" />
       <dat-boolean v-model="showPhoto" label="photo?" />
       <dat-string v-model="photo" label="photo" />
       <dat-string v-model="noiseLayer" label="noise layer" />
