@@ -8,6 +8,10 @@ import { Portal, PortalTarget } from 'portal-vue'
 import DatGui from '@cyrilf/vue-dat-gui'
 import VanillaTilt from 'vanilla-tilt'
 
+import { Canvas } from 'glsl-canvas-js'
+import kaleido from './frags/kaleido'
+import pastel from './frags/pastel'
+
 Vue.use(DatGui)
 const tiltOptions = {
   reverse: true, // reverse the tilt direction
@@ -238,9 +242,25 @@ export default defineComponent({
         w: 0,
         h: 0,
         extra: '',
-        debug: true
+        debug: true,
       },
       transform: !true,
+      effects: false,
+      canvas: null,
+      frags: [pastel, kaleido],
+      frag: {
+        textures: [
+          { name: 'none', value: '' },
+          { name: 'copyof', value: 'copyof.jpg' },
+          { name: 'spiral', value: 'spiral.jpg' },
+          { name: 'tool', value: 'tool.jpg' },
+        ],
+        texture: '',
+        center: {
+          x: 0.5,
+          y: -1.0,
+        },
+      },
     }
   },
   computed: {
@@ -250,12 +270,12 @@ export default defineComponent({
         left: left + '%',
         top: top + '%',
         color,
-        fontSize: size + "rem",
+        fontSize: size + 'rem',
         fontWeight: weight,
         display: display ? 'block' : 'none',
         width: w + '%',
         height: h + '%',
-        'box-shadow': 'inset 0 0 4px ' + (debug ? 'red' : 'transparent')
+        'box-shadow': 'inset 0 0 4px ' + (debug ? 'red' : 'transparent'),
       }
     },
     boxShadowStyle() {
@@ -280,11 +300,52 @@ export default defineComponent({
   },
   mounted() {
     this.startTime()
+    /** @link https://css-tricks.com/the-trick-to-viewport-units-on-mobile/ */
+    // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+    let vh = window.innerHeight * 0.01
+    // Then we set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
+    // alert(vh)
+    const canvas = document.querySelector('canvas')
+    const w = window.innerWidth
+    const h = vh * 100
+    // const dpi = window.devicePixelRatio
+    const dpi = 1
+    const size = Math.max(h, w) * 1
+    // alert(size)
+    canvas.width = size * dpi
+    canvas.height = size * dpi
+    // alert(canvas.height)
+    canvas.style.width = size + 'px'
+    canvas.style.height = size + 'px'
+    // todo: resize!
+    const options = {
+      // vertexString: `...`,
+      fragmentString: this.frags[1],
+      alpha: false,
+      antialias: !true,
+      mode: 'flat',
+      extensions: ['EXT_shader_texture_lod'],
+    }
+    this.canvas = new Canvas(canvas, options)
+
+    this.canvas.setUniform('u_center', this.frag.center.x, this.frag.center.y)
+
     // const element = document.querySelector(".photo");
     // VanillaTilt.init(element, tiltOptions);
     // element.addEventListener("tiltChange", callback);
   },
   watch: {
+    'frag.texture': function (n) {
+      // alert(n)
+      this.canvas.setUniform('u_tex0', n);
+    },
+    'frag.center.x': function (newVal, oldVal) {
+      this.canvas.setUniform('u_center', newVal, this.frag.center.y)
+    },
+    'frag.center.y': function (newVal, oldVal) {
+      this.canvas.setUniform('u_center', this.frag.center.x, newVal)
+    },
     transform(val, oldval) {
       if (val == false) {
         const element = document.querySelector('.photo')
@@ -304,17 +365,39 @@ export default defineComponent({
 </script>
 
 <template>
-  <div id="app" style="width: 100vw; height: 100vh" :style="{ 'background-color': background }">
+  <div id="app" style="
+      /* position: fixed;
+    top: 0;
+    left: 0; */
+      width: 100%;
+      height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+      height: calc(var(--vh, 1vh) * 100);
+      min-height: -webkit-fill-available;
+    " :style="{ 'background-color': background, overflow: 'hidden' }">
+    <!-- todo: fix bug on textures for mobile (ios 2019 at least!) -->
+    <canvas :data-textures="frag.texture"></canvas>
+    <!-- <canvas class="glsl-canvas" :data-fragment="frags[1]" data-textures="tool.jpg"></canvas> -->
+    <!-- <canvas data-textures="tool.jpg" class="glslCanvas"
+      :data-fragment="frags[1]"></canvas> -->
     <pre v-if="showDebug">{{ utime }}</pre>
 
-    <dat-gui v-if="content.display" style="position: absolute; top: unset; bottom: 0; z-index: 20"
+    <dat-gui v-if="effects" style="position: absolute; top: unset; bottom: 0; left: 0; z-index: 20"
       closeText="close text" openText="open text" closePosition="top">
+      <!-- <dat-string v-model="frag.texture" label="img" /> -->
+      <dat-select v-model="frag.texture" :items="frag.textures" label="image" />
+      <dat-number v-model="frag.center.x" :min="-1" :max="1" :step="0.01" label="x" />
+      <dat-number v-model="frag.center.y" :min="-1" :max="1" :step="0.01" label="y" />
+      <!-- </dat-folder> -->
+    </dat-gui>
+
+    <dat-gui v-if="content.display" style="position: absolute; top: unset; bottom: 0; z-index: 20"
+      closeText="close fx" openText="open fx" closePosition="top">
       <!-- todo: find a way to reduce duplication! -->
       <!-- <dat-folder label="Box shadow" closed> -->
       <dat-boolean v-model="content.debug" label="debug?" />
       <dat-string v-model="content.text" label="content" />
       <!-- <dat-string v-model="content.extra" label="extra styles" /> -->
-      <dat-number v-model="content.size" :min="0" :max="10" :step=".1" label="size" />
+      <dat-number v-model="content.size" :min="0" :max="10" :step="0.1" label="size" />
       <dat-number v-model="content.weight" :min="100" :max="900" :step="100" label="weight" />
       <dat-number v-model="content.left" :min="-20" :max="100" :step="1" label="x" />
       <dat-number v-model="content.top" :min="-20" :max="100" :step="1" label="y" />
@@ -325,10 +408,9 @@ export default defineComponent({
     </dat-gui>
 
     <!-- <pre>{{textStyles}}</pre> -->
-
-
     <section data-tilt data-tilt-full-page-listening class="photo" style="
-    transform-style: preserve-3d; transform: perspective(1000px);
+        transform-style: preserve-3d;
+        transform: perspective(1000px);
         aspect-ratio: 5/6;
         display: grid;
         grid-area: 1/1;
@@ -343,9 +425,8 @@ export default defineComponent({
         // border: /** debug */ 0.1rem solid;
         // border-color: /** debug */ red;
       ">
-
       <!-- todo find a simple way to inject extra styles from dat-gui -->
-      <span :style="textStyles" style="width: 0%; height: 0%; z-index: 10; position: absolute;">
+      <span :style="textStyles" style="width: 0%; height: 0%; z-index: 10; position: absolute">
         {{ content.text }}
       </span>
 
@@ -389,6 +470,7 @@ export default defineComponent({
       <dat-string v-model="noiseLayer" label="noise layer" />
       <dat-boolean v-model="showDebug" label="debug?" />
       <dat-boolean v-model="animate" label="animate?" />
+      <dat-boolean v-model="effects" label="effects?" />
       <dat-boolean v-model="transform" label="3d?" />
       <dat-boolean v-model="content.display" label="text?" />
       <dat-color v-model="background" label="background" />
@@ -480,12 +562,9 @@ export default defineComponent({
 
 <style>
 #app {
-  /* position: relative; */
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  /* color: #2c3e50; */
-  /* margin-top: 60px; */
 }
 </style>
