@@ -1,5 +1,5 @@
 <script>
-import { sharedStyles } from './shared/styles'
+import { debugStyles } from './shared/styles'
 
 export default {
     functional: true,
@@ -68,7 +68,7 @@ export default {
         // console.log(lastLayer?.map(v => console.log(v.render())))
         const attatchOverlayBuffers = () => {
             const staticStyles = `
-                ${sharedStyles}
+                ${debugStyles}
                 right: -40%;
             `
             const tag = 'section'

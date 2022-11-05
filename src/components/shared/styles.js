@@ -1,4 +1,4 @@
-export const sharedStyles = `
+export const debugStyles = `
     width: 35%;
     height: auto;
     aspect-ratio: 1;
