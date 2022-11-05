@@ -70,7 +70,7 @@ export default defineComponent({
     boxShadowStyle() {
       if (!this.showShadow) return
       const { offsetX, offsetY, blurRadius, spreadRadius, color } = this.boxShadow
- 
+
       return {
         'box-shadow': `${offsetX}px ${offsetY}px ${blurRadius}px ${spreadRadius}px ${color}`,
       }
@@ -247,9 +247,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div
-    id="app"
-    style="
+  <div id="app" style="
       /* position: fixed;
     top: 0;
     left: 0; */
@@ -265,9 +263,7 @@ export default defineComponent({
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
-    "
-    :style="{ 'background-color': background, 'background-image': `url(${bg.url})`, overflow: 'hidden' }"
-  >
+    " :style="{ 'background-color': background, 'background-image': `url(${bg.url})`, overflow: 'hidden' }">
     <!-- todo: fix bug on textures for mobile (ios 2019 at least!) -->
 
     <canvas v-if="effects" :data-textures="frag.texture"></canvas>
@@ -277,26 +273,16 @@ export default defineComponent({
 
     <pre v-if="showDebug">{{ utime }}</pre>
 
-    <dat-gui
-      v-if="effects"
-      style="position: absolute; top: unset; bottom: 0; left: 0; z-index: 20"
-      closeText="close fx"
-      openText="open fx"
-      closePosition="top"
-    >
+    <dat-gui v-if="effects" style="position: absolute; top: unset; bottom: 0; left: 0; z-index: 20" closeText="close fx"
+      openText="open fx" closePosition="top">
       <dat-select v-model="frag.texture" :items="frag.textures" label="image" />
       <dat-number v-model="frag.center.x" :min="-1" :max="1" :step="0.01" label="x" />
       <dat-number v-model="frag.center.y" :min="-1" :max="1" :step="0.01" label="y" />
       <dat-number v-model="frag.velocity" :min="-1" :max="1" :step="0.01" label="velocity" />
     </dat-gui>
 
-    <dat-gui
-      v-if="showBgOpts"
-      style="position: absolute; top: unset; right: 0; z-index: 20"
-      closeText="close background"
-      openText="open background"
-      closePosition="top"
-    >
+    <dat-gui v-if="showBgOpts" style="position: absolute; top: unset; right: 0; z-index: 20"
+      closeText="close background" openText="open background" closePosition="top">
       <dat-string v-model="bg.url" label="url" />
       <dat-color v-model="background" label="background" />
 
@@ -317,13 +303,8 @@ export default defineComponent({
       </dat-folder>
     </dat-gui>
 
-    <dat-gui
-      v-if="content.display"
-      style="position: absolute; top: unset; bottom: 0; z-index: 20"
-      closeText="close fx"
-      openText="open fx"
-      closePosition="top"
-    >
+    <dat-gui v-if="content.display" style="position: absolute; top: unset; bottom: 0; z-index: 20" closeText="close fx"
+      openText="open fx" closePosition="top">
       <!-- todo: find a way to reduce duplication! -->
 
       <dat-boolean v-model="content.debug" label="debug?" />
@@ -340,11 +321,7 @@ export default defineComponent({
     </dat-gui>
 
     <!-- <pre>{{textStyles}}</pre> -->
-    <section
-      data-tilt
-      data-tilt-full-page-listening
-      class="photo"
-      style="
+    <section data-tilt data-tilt-full-page-listening class="photo" style="
         aspect-ratio: 5/6;
         display: grid;
         grid-area: 1/1;
@@ -358,99 +335,45 @@ export default defineComponent({
         right: 0;
         // border: /** debug */ 0.1rem solid;
         // border-color: /** debug */ red;
-      "
-    >
+      ">
       <!-- todo find a simple way to inject extra styles from dat-gui -->
       <span :style="textStyles" style="width: 0%; height: 0%; z-index: 10; position: absolute">
         {{ content.text }}
       </span>
 
-      <img
-        style="width: 100%; display: grid; grid-area: 1/1"
-        :src="photo"
-        alt=""
-        :style="photoStyles"
-        
-        v-show="showPhoto"
-      />
+      <img style="width: 100%; display: grid; grid-area: 1/1" :src="photo" alt="" :style="photoStyles"
+        v-show="showPhoto" />
 
-      <Composition
-        :debug="showDebug"
-        :blend="composition.blend"
-        :bright="composition.bright"
-        :contrast="composition.contrast"
-        :saturate="composition.saturate"
-      >
-        <Layer
-          :blend="b0.blend"
-          :zoom="b0.zoom + '%'"
-          :pos="b0.posX + '% ' + b0.posY + '%'"
-          :bg="'url(' + noiseLayer + ')'"
-        />
-        <Layer
-          :blend="b1.blend"
-          :zoom="b1.zoomW + '% ' + b1.zoomH + '%'"
-          :pos="b1.posX + '% ' + b1.posY + '%'"
-          bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))"
-        />
-        <Layer
-          :blend="b2.blend"
-          :zoom="b2.zoom + '%'"
-          :pos="b2.posX + utime + '% ' + b2.posY + '%'"
-          bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)"
-        />
-        <Layer
-          :blend="b3.blend"
-          :zoom="b3.zoom + '%'"
-          :pos="b3.posX + '% ' + b3.posY + '%'"
-          bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)"
-        />
+      <Composition :debug="showDebug" :blend="composition.blend" :bright="composition.bright"
+        :contrast="composition.contrast" :saturate="composition.saturate">
+        <Layer :blend="b0.blend" :zoom="b0.zoom + '%'" :pos="b0.posX + '% ' + b0.posY + '%'"
+          :bg="'url(' + noiseLayer + ')'" />
+        <Layer :blend="b1.blend" :zoom="b1.zoomW + '% ' + b1.zoomH + '%'" :pos="b1.posX + '% ' + b1.posY + '%'"
+          bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))" />
+        <Layer :blend="b2.blend" :zoom="b2.zoom + '%'" :pos="b2.posX + utime + '% ' + b2.posY + '%'"
+          bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)" />
+        <Layer :blend="b3.blend" :zoom="b3.zoom + '%'" :pos="b3.posX + '% ' + b3.posY + '%'"
+          bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)" />
       </Composition>
 
-      <Overlay
-        :blend="overlay.blend"
-        :bright="overlay.bright"
-        :contrast="overlay.contrast"
-        :saturate="overlay.saturate"
-      >
-        <Layer
-          :blend="b20.blend"
-          :pos="b20.posX + '% ' + b20.posY + '%'"
-          :zoom="b20.zoom + '%'"
-          :bg="'url(' + noiseLayer + ')'"
-        />
-        <Layer
-          :blend="b21.blend"
-          :zoom="b21.zoomW + '% ' + b21.zoomH + '%'"
-          :pos="b21.posX + '% ' + b21.posY + '%'"
-          bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))"
-        />
-        <Layer
-          blend="hard-light"
-          :blend="b22.blend"
-          :zoom="b22.zoom + '%'"
+      <Overlay :blend="overlay.blend" :bright="overlay.bright" :contrast="overlay.contrast"
+        :saturate="overlay.saturate">
+        <Layer :blend="b20.blend" :pos="b20.posX + '% ' + b20.posY + '%'" :zoom="b20.zoom + '%'"
+          :bg="'url(' + noiseLayer + ')'" />
+        <Layer :blend="b21.blend" :zoom="b21.zoomW + '% ' + b21.zoomH + '%'" :pos="b21.posX + '% ' + b21.posY + '%'"
+          bg="repeating-linear-gradient(0deg, rgb(255, 119, 115) calc(5%*1), rgba(255, 237, 95, 1) calc(5%*2), rgba(168, 255, 95, 1) calc(5%*3), rgba(131, 255, 247, 1) calc(5%*4), rgba(120, 148, 255, 1) calc(5%*5), rgb(216, 117, 255) calc(5%*6), rgb(255, 119, 115) calc(5%*7))" />
+        <Layer blend="hard-light" :blend="b22.blend" :zoom="b22.zoom + '%'"
           :pos="-(b22.posX + utime) + '% ' + b22.posY + '%'"
-          bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)"
-        />
-        <Layer
-          blend="exclusion"
-          :blend="b23.blend"
-          :zoom="b23.zoom + '%'"
-          :pos="b23.posX + '% ' + b23.posY + '%'"
-          bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)"
-        />
+          bg="repeating-linear-gradient(/* lever -> */ 45deg /* <-*/, #0e152e 0%, hsl(180, 10%, 60%) 3.8%, hsl(180, 29%, 66%) 4.5%, hsl(180, 10%, 60%) 5.2%, #0e152e 10%, #0e152e 12%)" />
+        <Layer blend="exclusion" :blend="b23.blend" :zoom="b23.zoom + '%'" :pos="b23.posX + '% ' + b23.posY + '%'"
+          bg="radial-gradient(farthest-corner circle at 50% 50%, rgba(0, 0, 0, .1) 12%, rgba(0, 0, 0, .15) 20%, rgba(0, 0, 0, .25) 120%)" />
       </Overlay>
 
       <!-- <section class="handler" style="color:aliceblue; background-color: rosybrown; width: 100%; height: 20rem; margin-top: 3rem;"> 3d handler </section> -->
     </section>
 
-    <dat-gui
-      closed
-      style="position: absolute; left: 24%; z-index: 20"
-      closeText="Close controls"
-      openText="Main controls"
-      closePosition="bottom"
-    >
+    <dat-gui closed style="position: absolute; left: 24%; z-index: 20" closeText="Close controls"
+      openText="Main controls" closePosition="bottom">
       <!-- todo: find a way to reduce duplication! -->
 
       <dat-button @click="save" label="save preset" />
