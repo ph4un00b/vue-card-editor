@@ -1,8 +1,24 @@
 <script>
 import { debugStyles, cardStyles } from './shared/styles'
+import { Portal, PortalTarget } from 'portal-vue'
+
+// import Vue from 'vue'
+// import Vlf from 'vlf'
+// import localforage from 'localforage'
+// Vue.use(Vlf, localforage)
 
 export default {
-  functional: true,
+  components: {
+    Portal,
+    PortalTarget,
+  },
+  beforeCreate() {
+    // alert('instance')
+    // this.$vlf.createInstance({
+    //   storeName: 'export',
+    // })
+  },
+  // functional: true,
   props: {
     aspect: {
       type: String,
@@ -45,7 +61,9 @@ export default {
     // },
   },
   render(h, context) {
-    const slots = context.slots()
+    // console.log(this.$slots)
+    const slots = context ? context.slots() : this.$slots
+    const props = context ? context.props : this.$props
     let blendModes = ''
     let buffers = []
     let bgSizes = []
@@ -112,16 +130,19 @@ export default {
       ]
     }
 
-    // console.log(buffers)
+    // console.log(this.$props)
     const rmLastComma = (x) => x.substring(0, x.lastIndexOf(','))
     blendModes = rmLastComma(blendModes)
-    const props = context.props
     const isLastLayer = slots?.last
     // we used children but i prefer to have the
     // children component <Overlay> as a sibling
     const childrenOverlay = isLastLayer ? [slots?.last] : []
 
-    // console.log({props, ...{ buffers, bgSizes, blendModes, bgPositions }})
+    // this.$vlf.setItem('preset', {props, ...{ buffers, bgSizes, blendModes, bgPositions }}).then((v) => {
+    //     // console.log(v)
+    //     console.log('props saved!')
+    // })
+
     const compositionHTML = h(
       'div',
       {
