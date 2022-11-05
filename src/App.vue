@@ -59,10 +59,10 @@ export default defineComponent({
     },
     photoStyles() {
       if (!this.showShadow) return
-      const { size, style, bcolor } = this.texture.border
+      const { size, style, color } = this.texture.border
       console.log(this.texture)
       return {
-        // 'color': bcolor,
+        'color': color,
         'border-style': style,
         'border-width': size + 'px',
       }
@@ -341,6 +341,7 @@ export default defineComponent({
         {{ content.text }}
       </span>
 
+      <!-- <pre v-if="showDebug">{{texture.border.color}}</pre> -->
       <img style="width: 100%; display: grid; grid-area: 1/1" :src="photo" alt="" :style="photoStyles"
         v-show="showPhoto" />
 

@@ -1,4 +1,6 @@
 <script>
+import { sharedStyles } from './shared/styles'
+
 export default {
   functional: true,
   props: {
@@ -73,16 +75,9 @@ export default {
     // console.log(lastLayer?.map(v => console.log(v.render())))
     const attachMainBuffers = () => {
       const staticStyles = `
-        width: 35%;
-        height: auto;
-        aspect-ratio: 1;
-        // max-width: calc(768px / 4);
-        position: fixed;
-        // margin: auto;
-        // border: /** debug */ 0.1rem solid;
-        // border-color: /** debug */ red;
+        ${sharedStyles}
         left: -40%;
-        `
+      `
 
       const tag = 'section'
       const styles = (INDEX, extra = "") => ({
@@ -105,17 +100,9 @@ export default {
     }
 
     const createOverlayBuffers = () => {
-
       const staticStylesCovers = `
-      width: 35%;
-      height: auto;
-      aspect-ratio: 1;
-      // max-width: calc(768px / 4);
-      position: absolute;
-      // margin: auto;
-      // border: /** debug */ 0.1rem solid;
-      // border-color: /** debug */ red;
-      right: -40%;
+        ${sharedStyles}
+        right: -40%;
       `
       const tag = 'section'
       return [
