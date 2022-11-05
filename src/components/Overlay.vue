@@ -1,5 +1,5 @@
 <script>
-import { debugStyles } from './shared/styles'
+import { debugStyles, cardStyles } from './shared/styles'
 
 export default {
     functional: true,
@@ -72,22 +72,22 @@ export default {
                 right: -40%;
             `
             const tag = 'section'
-            const styles = (INDEX, extra = "") => ({
+            const styles = (INDEX, extra = '') => ({
                 style: `
                     ${staticStyles}
                     background-position: ${bgPositions[INDEX]};
                     background-size: ${bgSizes[INDEX]};
                     background-image: ${buffers[INDEX]};
                     ${extra};
-                `
+                `,
             })
 
             return [
                 h('portal', { props: { to: 'destination' } }, [
-                    h(tag, styles(0, "top: 0"), 'buffer20'),
-                    h(tag, styles(1, "top: 20%"), 'buffer21'),
-                    h(tag, styles(2, "top: 40%"), 'buffer22'),
-                    h(tag, styles(3, "top: 60%"), 'buffer23'),
+                    h(tag, styles(0, 'top: 0'), 'buffer20'),
+                    h(tag, styles(1, 'top: 20%'), 'buffer21'),
+                    h(tag, styles(2, 'top: 40%'), 'buffer22'),
+                    h(tag, styles(3, 'top: 60%'), 'buffer23'),
                 ]),
             ]
         }
@@ -100,35 +100,13 @@ export default {
         // bgPositions = rmLastComma(bgPositions)
         const props = context.props
 
-        const overlayHTML = h(
-            'div',
-            {
-                style: `
-                    display: grid;
-                    grid-area: 1/1;
-                    width: 100%;
-                    // width: 60vw;
-                    height: 100%
-                    // max-width: 768px;
-                    mix-blend-mode: ${props.blend};
-                    background-image: ${buffers.join(',')};
-                    background-size: ${bgSizes.join(",")};
-                    background-blend-mode: ${blendModes};
-                    background-position: ${bgPositions.join(",")};
-                    filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
-                    aspect-ratio: ${props.aspect};
-                        `,
-                slots
-            },
-        )
+        // console.log(slots)
+        const overlayHTML = h('div', {
+            style: cardStyles(props, { buffers, bgSizes, blendModes, bgPositions }),
+            slots,
+        })
 
-        const html = [
-            h('portal', { props: { to: 'overlay' } }, [
-                overlayHTML
-            ]
-            ),
-            ...attatchOverlayBuffers()
-        ]
+        const html = [h('portal', { props: { to: 'overlay' } }, [overlayHTML]), ...attatchOverlayBuffers()]
 
         return html
     },

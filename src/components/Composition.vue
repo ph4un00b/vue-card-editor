@@ -1,5 +1,5 @@
 <script>
-import { debugStyles } from './shared/styles'
+import { debugStyles, cardStyles } from './shared/styles'
 
 export default {
   functional: true,
@@ -37,8 +37,8 @@ export default {
     debug: {
       type: Boolean,
       required: !true,
-      default: true
-    }
+      default: true,
+    },
     // filter: {
     //   type: String,
     //   required: true,
@@ -52,7 +52,6 @@ export default {
     let bgPositions = []
 
     if (slots?.default) {
-
       slots?.default.forEach(
         ({
           componentOptions: {
@@ -69,7 +68,6 @@ export default {
           bgPositions.push(pos ? pos : '0% 0%')
         }
       )
-
     }
 
     // console.log(lastLayer?.map(v => console.log(v.render())))
@@ -80,23 +78,22 @@ export default {
       `
 
       const tag = 'section'
-      const styles = (INDEX, extra = "") => ({
+      const styles = (INDEX, extra = '') => ({
         style: `
           ${staticStyles}
           background-position: ${bgPositions[INDEX]};
           background-size: ${bgSizes[INDEX]};
           background-image: ${buffers[INDEX]};
           ${extra};
-          `
+          `,
       })
 
       return [
-        h(tag, styles(0, "top: 0"), 'buffer0'),
-        h(tag, styles(1, "top: 20%"), 'buffer1'),
-        h(tag, styles(2, "top: 40%"), 'buffer2'),
-        h(tag, styles(3, "top: 60%"), 'buffer3'),
+        h(tag, styles(0, 'top: 0'), 'buffer0'),
+        h(tag, styles(1, 'top: 20%'), 'buffer1'),
+        h(tag, styles(2, 'top: 40%'), 'buffer2'),
+        h(tag, styles(3, 'top: 60%'), 'buffer3'),
       ]
-
     }
 
     const createOverlayBuffers = () => {
@@ -124,38 +121,19 @@ export default {
     // children component <Overlay> as a sibling
     const childrenOverlay = isLastLayer ? [slots?.last] : []
 
+    // console.log({props, ...{ buffers, bgSizes, blendModes, bgPositions }})
     const compositionHTML = h(
       'div',
       {
         class: 'composition',
-        style: `
-            display: grid;
-            grid-area: 1/1;
-            width: 100%;
-            // width: 60vw;
-            height: 100%
-            // max-width: 768px;
-            mix-blend-mode: ${props.blend};
-            background-image: ${buffers.join(',')};
-            background-size: ${bgSizes.join(",")};
-            background-blend-mode: ${blendModes};
-            background-position: ${bgPositions.join(",")};
-            filter: brightness(${props.bright}) contrast(${props.contrast}) saturate(${props.saturate});
-            aspect-ratio: ${props.aspect};
-      `,
+        style: cardStyles(props, { buffers, bgSizes, blendModes, bgPositions }),
       },
-      [
-        h('portal-target', { props: { name: 'overlay' } }, [])
-      ],
+      [h('portal-target', { props: { name: 'overlay' } }, [])]
 
       // children
     )
-    
-    const debugHTML = [
-      compositionHTML,
-      ...attachMainBuffers(),
-      ...createOverlayBuffers(),
-    ]
+
+    const debugHTML = [compositionHTML, ...attachMainBuffers(), ...createOverlayBuffers()]
 
     if (props.debug) {
       return debugHTML
