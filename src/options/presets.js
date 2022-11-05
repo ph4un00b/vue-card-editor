@@ -119,6 +119,19 @@ export const defaultPreset = {
     },
     transform: !true,
     effects: false,
+    showBgOpts: false,
+    texture: {
+      border: {
+        style: 'double',
+        size: 0,
+        color: '#000'
+      }
+    },
+    bg: {
+      url: '',
+      x: 50,
+      y: 50
+    },
     frag: {
       velocity: 0.25,
       textures: [

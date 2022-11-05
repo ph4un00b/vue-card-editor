@@ -66,14 +66,15 @@ export default {
         // console.log(lastLayer?.map(v => console.log(v.render())))
         const attatchOverlayBuffers = () => {
             const staticStyles = `
-                width: 20vh;
-                height: 20vh;
+                width: 35%;
+                height: auto;
+                aspect-ratio: 1;
                 // max-width: calc(768px / 4);
                 position: fixed;
                 // margin: auto;
                 // border: /** debug */ 0.1rem solid;
                 // border-color: /** debug */ red;
-                right: 0;
+                right: -40%;
                 `
             const tag = 'section'
             const styles = (INDEX, extra = "") => ({
@@ -89,9 +90,9 @@ export default {
             return [
                 h('portal', { props: { to: 'destination' } }, [
                     h(tag, styles(0, "top: 0"), 'buffer20'),
-                    h(tag, styles(1, "top: 20vh"), 'buffer21'),
-                    h(tag, styles(2, "top: 40vh"), 'buffer22'),
-                    h(tag, styles(3, "top: 60vh"), 'buffer23'),
+                    h(tag, styles(1, "top: 20%"), 'buffer21'),
+                    h(tag, styles(2, "top: 40%"), 'buffer22'),
+                    h(tag, styles(3, "top: 60%"), 'buffer23'),
                 ]),
             ]
         }

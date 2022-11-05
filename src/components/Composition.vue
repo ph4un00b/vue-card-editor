@@ -73,14 +73,15 @@ export default {
     // console.log(lastLayer?.map(v => console.log(v.render())))
     const attachMainBuffers = () => {
       const staticStyles = `
-        width: 20vh;
-        height: 20vh;
+        width: 35%;
+        height: auto;
+        aspect-ratio: 1;
         // max-width: calc(768px / 4);
         position: fixed;
         // margin: auto;
         // border: /** debug */ 0.1rem solid;
         // border-color: /** debug */ red;
-        left: 0;
+        left: -40%;
         `
 
       const tag = 'section'
@@ -96,9 +97,9 @@ export default {
 
       return [
         h(tag, styles(0, "top: 0"), 'buffer0'),
-        h(tag, styles(1, "top: 20vh"), 'buffer1'),
-        h(tag, styles(2, "top: 40vh"), 'buffer2'),
-        h(tag, styles(3, "top: 60vh"), 'buffer3'),
+        h(tag, styles(1, "top: 20%"), 'buffer1'),
+        h(tag, styles(2, "top: 40%"), 'buffer2'),
+        h(tag, styles(3, "top: 60%"), 'buffer3'),
       ]
 
     }
@@ -106,22 +107,23 @@ export default {
     const createOverlayBuffers = () => {
 
       const staticStylesCovers = `
-      width: 20vh;
+      width: 35%;
       height: auto;
+      aspect-ratio: 1;
       // max-width: calc(768px / 4);
       position: absolute;
       // margin: auto;
       // border: /** debug */ 0.1rem solid;
       // border-color: /** debug */ red;
-      right: 0;
+      right: -40%;
       `
       const tag = 'section'
       return [
         h('portal-target', { props: { name: 'destination' } }, [
           h(tag, { style: `${staticStylesCovers} top: 0;` }, 'buffer20'),
-          h(tag, { style: `${staticStylesCovers} top: 20vh;` }, 'buffer21'),
-          h(tag, { style: `${staticStylesCovers} top: 40vh;` }, 'buffer22'),
-          h(tag, { style: `${staticStylesCovers} top: 60vh;` }, 'buffer23'),
+          h(tag, { style: `${staticStylesCovers} top: 20%;` }, 'buffer21'),
+          h(tag, { style: `${staticStylesCovers} top: 40%;` }, 'buffer22'),
+          h(tag, { style: `${staticStylesCovers} top: 60%;` }, 'buffer23'),
         ]),
       ]
     }
