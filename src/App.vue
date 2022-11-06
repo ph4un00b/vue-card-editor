@@ -85,6 +85,13 @@ export default defineComponent({
         console.log(html)
         // this.downloadHtml(html)
       })
+
+      this.$vlf.getItem('overlay-props').then((v) => {
+        const { props, buffers, bgSizes, blendModes, bgPositions } = v
+        const html = cardStyles(props, { buffers, bgSizes, blendModes, bgPositions })
+        console.log(html)
+        // this.downloadHtml(html)
+      })
     },
     downloadHtml(html) {
       const fileType = {
@@ -194,7 +201,8 @@ export default defineComponent({
       const h = vh * 100
       // const dpi = window.devicePixelRatio
       const dpi = 1
-      const size = Math.max(h, w) * 1
+      // just using 1 pixel by now unless really necessary!
+      const size = Math.max(h, w) * dpi
       // alert(size)
       canvas.width = size * dpi
       canvas.height = size * dpi
@@ -286,6 +294,7 @@ export default defineComponent({
       /* position: fixed;
     top: 0;
     left: 0; */
+      overflow: hidden;
       width: 100%;
       height: 100vh; /* Fallback for browsers that do not support Custom Properties */
       height: calc(var(--vh, 1vh) * 100);
@@ -298,7 +307,7 @@ export default defineComponent({
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
-    " :style="{ 'background-color': background, 'background-image': `url(${bg.url})`, overflow: 'hidden' }">
+    " :style="{ 'background-color': background, 'background-image': `url(${bg.url})` }">
     <!-- todo: fix bug on textures for mobile (ios 2019 at least!) -->
 
     <canvas v-if="effects" :data-textures="frag.texture"></canvas>
@@ -380,7 +389,7 @@ export default defineComponent({
       <img style="width: 100%; display: grid; grid-area: 1/1" :src="photo" alt="" :style="photoStyles"
         v-show="showPhoto" />
 
-        <Composition :debug="showDebug" :blend="composition.blend" :bright="composition.bright"
+      <Composition :debug="showDebug" :blend="composition.blend" :bright="composition.bright"
         :contrast="composition.contrast" :saturate="composition.saturate">
         <Layer :blend="b0.blend" :zoom="b0.zoom + '%'" :pos="b0.posX + '% ' + b0.posY + '%'"
           :bg="'url(' + noiseLayer + ')'" />

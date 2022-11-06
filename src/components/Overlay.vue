@@ -106,6 +106,11 @@ export default {
         // bgSizes = rmLastComma(bgSizes)
         // bgPositions = rmLastComma(bgPositions)
         // console.log(slots)
+
+        this.$vlf.setItem('overlay-props', { props, ...{ buffers, bgSizes, blendModes, bgPositions } }).then((v) => {
+            console.log('props saved!', v)
+        })
+
         const overlayHTML = h('div', {
             style: cardStyles(props, { buffers, bgSizes, blendModes, bgPositions }),
             slots,
