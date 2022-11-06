@@ -2,22 +2,22 @@
 import { debugStyles, cardStyles } from './shared/styles'
 import { Portal, PortalTarget } from 'portal-vue'
 
-// import Vue from 'vue'
-// import Vlf from 'vlf'
-// import localforage from 'localforage'
-// Vue.use(Vlf, localforage)
+import Vue from 'vue'
+import Vlf from 'vlf'
+import localforage from 'localforage'
+Vue.use(Vlf, localforage)
 
 export default {
   components: {
     Portal,
     PortalTarget,
   },
-  beforeCreate() {
-    // alert('instance')
-    // this.$vlf.createInstance({
-    //   storeName: 'export',
-    // })
-  },
+  // beforeCreate() {
+  //   // alert('instance')
+  //   this.$vlf.createInstance({
+  //     storeName: 'export',
+  //   })
+  // },
   // functional: true,
   props: {
     aspect: {
@@ -138,10 +138,9 @@ export default {
     // children component <Overlay> as a sibling
     const childrenOverlay = isLastLayer ? [slots?.last] : []
 
-    // this.$vlf.setItem('preset', {props, ...{ buffers, bgSizes, blendModes, bgPositions }}).then((v) => {
-    //     // console.log(v)
-    //     console.log('props saved!')
-    // })
+    this.$vlf.setItem('composition-props', { props, ...{ buffers, bgSizes, blendModes, bgPositions } }).then((v) => {
+      // console.log('props saved!', v)
+    })
 
     const compositionHTML = h(
       'div',

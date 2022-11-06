@@ -21,6 +21,7 @@ Vue.use(DatGui)
 import { tiltOptions } from './options/transform'
 import { defaultPreset } from './options/presets'
 import { blends } from './options/blends'
+import { cardStyles } from './components/shared/styles'
 
 export default defineComponent({
   name: 'App',
@@ -62,7 +63,7 @@ export default defineComponent({
       const { size, style, color } = this.texture.border
       console.log(this.texture)
       return {
-        'color': color,
+        color: color,
         'border-style': style,
         'border-width': size + 'px',
       }
@@ -77,6 +78,40 @@ export default defineComponent({
     },
   },
   methods: {
+    exportHtml() {
+      this.$vlf.getItem('composition-props').then((v) => {
+        const { props, buffers, bgSizes, blendModes, bgPositions } = v
+        const html = cardStyles(props, { buffers, bgSizes, blendModes, bgPositions })
+        console.log(html)
+        // this.downloadHtml(html)
+      })
+    },
+    downloadHtml(html) {
+      const fileType = {
+        PNG: 'image/png',
+        JPEG: 'image/jpeg',
+        HTML: 'text/html',
+        PDF: 'application/pdf',
+        JSON: 'application/json',
+      }
+
+      function html2URL(data, mimeType) {
+        return URL.createObjectURL(new Blob([html], { type: mimeType }))
+      }
+
+      const saveAs = (uri, filename) => {
+        const link = document.createElement('a')
+        link.href = uri
+        link.download = filename
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        //   window.open(uri)
+      }
+
+      const url = html2URL(html, fileType.HTML)
+      saveAs(url, 'card.html')
+    },
     reset() {
       this.$vlf.setItem('preset', defaultPreset).then((v) => {
         Object.assign(this.$data, v)
@@ -380,6 +415,7 @@ export default defineComponent({
       <dat-button @click="save" label="save preset" />
       <dat-button @click="load" label="load preset" />
       <dat-button @click="reset" label="reset project" />
+      <dat-button @click="exportHtml" label="export" />
       <dat-boolean v-model="showPhoto" label="photo?" />
       <dat-string v-model="photo" label="photo" />
       <dat-string v-model="noiseLayer" label="noise layer" />
