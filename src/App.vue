@@ -380,7 +380,7 @@ export default defineComponent({
       <img style="width: 100%; display: grid; grid-area: 1/1" :src="photo" alt="" :style="photoStyles"
         v-show="showPhoto" />
 
-      <Composition :debug="showDebug" :blend="composition.blend" :bright="composition.bright"
+        <Composition :debug="showDebug" :blend="composition.blend" :bright="composition.bright"
         :contrast="composition.contrast" :saturate="composition.saturate">
         <Layer :blend="b0.blend" :zoom="b0.zoom + '%'" :pos="b0.posX + '% ' + b0.posY + '%'"
           :bg="'url(' + noiseLayer + ')'" />

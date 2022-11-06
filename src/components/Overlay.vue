@@ -1,8 +1,14 @@
 <script>
 import { debugStyles, cardStyles } from './shared/styles'
+import { Portal, PortalTarget } from 'portal-vue'
+import { Fragment } from 'vue-frag'
 
 export default {
-    functional: true,
+    components: {
+        Portal,
+        PortalTarget,
+        Fragment,
+    },
     props: {
         aspect: {
             type: String,
@@ -40,7 +46,8 @@ export default {
         // },
     },
     render(h, context) {
-        const slots = context.slots()
+        const slots = context ? context.slots() : this.$slots
+        const props = context ? context.props : this.$props
         let blendModes = ''
         let buffers = []
         let bgSizes = []
@@ -98,17 +105,15 @@ export default {
         blendModes = rmLastComma(blendModes)
         // bgSizes = rmLastComma(bgSizes)
         // bgPositions = rmLastComma(bgPositions)
-        const props = context.props
-
         // console.log(slots)
         const overlayHTML = h('div', {
             style: cardStyles(props, { buffers, bgSizes, blendModes, bgPositions }),
             slots,
         })
 
-        const html = [h('portal', { props: { to: 'overlay' } }, [overlayHTML]), ...attatchOverlayBuffers()]
-
-        return html
+        const portalNode = h('portal', { props: { to: 'overlay' } }, [overlayHTML])
+        const htmlNodes = h('fragment', [portalNode, ...attatchOverlayBuffers()])
+        return htmlNodes
     },
     data() {
         return {}
