@@ -62,7 +62,7 @@ export default defineComponent({
       const { size, style, color } = this.texture.border
       console.log(this.texture)
       return {
-        'color': color,
+        color: color,
         'border-style': style,
         'border-width': size + 'px',
       }
@@ -146,6 +146,16 @@ export default defineComponent({
       // console.log(this.utime);
       this.timerId = window.requestAnimationFrame(this.loop)
     },
+    changePicture() {
+      this.effects = false
+      /** dirty way for now :]
+       * destroying & creating a new canvas!
+       */
+
+      window.setTimeout(() => {
+        this.effects = true
+      }, 500)
+    },
     createCanvas() {
       /** @link https://css-tricks.com/the-trick-to-viewport-units-on-mobile/ */
       // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
@@ -182,6 +192,7 @@ export default defineComponent({
       console.log(this.frag.velocity)
       this.canvas.setUniform('u_center', this.frag.center.x, this.frag.center.y)
       this.canvas.setUniform('u_velocity', this.frag.velocity)
+      this.canvas?.setTexture('u_tex0', 'https://proxyfau.deno.dev/jamon.png')
     },
   },
   beforeCreate() {
@@ -211,9 +222,9 @@ export default defineComponent({
     'frag.velocity': function (n) {
       this.canvas?.setUniform('u_velocity', n)
     },
-    'frag.texture': function (n) {
-      this.canvas?.setUniform('u_tex0', n)
-    },
+    // 'frag.texture': function (n) {
+    //   this.canvas?.setTexture('u_tex0', 'https://proxyfau.deno.dev/jamon.png')
+    // },
     'frag.center.x': function (newVal, oldVal) {
       this.canvas?.setUniform('u_center', newVal, this.frag.center.y)
     },
@@ -235,6 +246,8 @@ export default defineComponent({
       if (val == false) {
         this.canvas.destroy()
         this.canvas = null
+        // Object.assign(this.$data, { frag: { textures: [] } })
+        console.log(this.$data)
       } else {
         this.$nextTick(this.createCanvas)
       }
@@ -275,7 +288,7 @@ export default defineComponent({
 
     <dat-gui v-if="effects" style="position: absolute; top: unset; bottom: 0; left: 0; z-index: 20" closeText="close fx"
       openText="open fx" closePosition="top">
-      <dat-select v-model="frag.texture" :items="frag.textures" label="image" />
+      <dat-button @click="changePicture" label="Change picture" />
       <dat-number v-model="frag.center.x" :min="-1" :max="1" :step="0.01" label="x" />
       <dat-number v-model="frag.center.y" :min="-1" :max="1" :step="0.01" label="y" />
       <dat-number v-model="frag.velocity" :min="-1" :max="1" :step="0.01" label="velocity" />
