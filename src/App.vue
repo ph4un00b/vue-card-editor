@@ -386,7 +386,7 @@ export default defineComponent({
       <!-- <section class="handler" style="color:aliceblue; background-color: rosybrown; width: 100%; height: 20rem; margin-top: 3rem;"> 3d handler </section> -->
     </section>
 
-    <dat-gui closed style="position: absolute; left: 24%; z-index: 20" closeText="Close controls"
+    <dat-gui open style="position: absolute; left: 24%; z-index: 20" closeText="Close controls"
       openText="Main controls" closePosition="bottom">
       <!-- todo: find a way to reduce duplication! -->
 
