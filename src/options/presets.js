@@ -1,5 +1,12 @@
 import { blends } from './blends'
 
+const mainSettings = {
+  debug: true,
+  animate: true,
+  mainControls: true,
+  textControls: true,
+};
+
 export const defaultPreset = {
     version: '20221104',
     composition: {
@@ -88,13 +95,13 @@ export const defaultPreset = {
       posY: 50,
       angle: 0,
     },
-    animate: !false,
+    animate: mainSettings.animate,
     animationVelocity: 0.015,
     showPhoto: true,
     photo: 'https://imgix.cosmicjs.com/9d2dbb80-45c4-11ed-8ad7-d16a9b880dcb-Einmusik-Mia.jpg',
     noiseLayer: '/noise.webp',
     // noiseLayer: "/tool.jpg"
-    showDebug: !true,
+    showDebug: mainSettings.debug,
     background: '#171717',
     showShadow: false,
     boxShadow: {
@@ -104,8 +111,9 @@ export const defaultPreset = {
       spreadRadius: 2,
       color: '#399e48',
     },
+    // text controls
     content: {
-      display: !true,
+      display: mainSettings.textControls,
       text: 'Hola!',
       left: 33,
       top: 66,
