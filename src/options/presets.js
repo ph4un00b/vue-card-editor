@@ -98,7 +98,7 @@ export const defaultPreset = {
     animate: mainSettings.animate,
     animationVelocity: 0.015,
     showPhoto: true,
-    photo: 'https://imgix.cosmicjs.com/9d2dbb80-45c4-11ed-8ad7-d16a9b880dcb-Einmusik-Mia.jpg',
+    photo: 'https://image.lexica.art/full_webp/40cdcbb1-4718-4201-99b8-e743dbe8d318',
     noiseLayer: '/noise.webp',
     // noiseLayer: "/tool.jpg"
     showDebug: mainSettings.debug,
@@ -114,7 +114,7 @@ export const defaultPreset = {
     // text controls
     content: {
       display: mainSettings.textControls,
-      text: 'Hola!',
+      text: 'kitten!',
       left: 33,
       top: 66,
       color: '#fff',
